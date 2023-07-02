@@ -1,0 +1,726 @@
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" alt="Logo" type="image/png" class="rounded-pill" href="{% static 'img/icono_salud.png' %}">
+  <title>Operador/Mod_index</title>
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <!-- MDB -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.css" rel="stylesheet" />
+  <!-- CSS only -->
+  <link rel="stylesheet" href="{% static 'estilos/style.css' %}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <!-- AJAX -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+</head>
+
+<html>
+
+<body>
+  <nav class="navbar navbar-expand-sm navbar-light bg-primary">
+    <div class="container-fluid justify-content-center">
+      <a class="navbar-brand" href="/index/">
+        <img src="{% static 'img/logo_salud.png' %}" alt="Logo" style="width:70px;" class="rounded-pill">
+      </a>
+      <button class="navbar-toggler ms-auto" type="button" data-mdb-toggle="collapse"
+        data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <i class="fas fa-chevron-circle-down"></i>
+      </button>
+    </div>
+    <div class="container collapse navbar-collapse" id="mynavbar">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="/mod_index/">MODIFICAR INDEX</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/cursos_add/">CURSOS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/consultas/">LISTA DE CONSULTAS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/resgitrar/">REGISTRAR</a>
+          </li>
+        </ul>
+        <span class="navbar-text">
+          <a class="nav-link active" aria-current="page" href="/logout/"><img src="{% static 'img/salida.png' %}"
+              width="40px">
+          </a>
+        </span>
+      </div>
+    </div>
+  </nav>
+
+
+  <div class="container text-center" style="margin-top: 10px;">
+    <h2 class="fw-bold my-3">Modificación del index</h2>
+  </div>
+  <div class="container text-center">
+    <nav>
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link active text-dark" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane"
+          type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Cartas</button>
+        <button class="nav-link text-dark" id="nav-profile-tab1" data-bs-toggle="tab" data-bs-target="#navPublic"
+          type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Publicidad</button>
+      </div>
+    </nav>
+    <div class="tab-content my-5" id="myTabContent">
+      <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+        <div class="container">
+          <div class="row">
+            <div  class="col-10 col-xl-4 col-md-5 col-sm-10 my-3">
+              <div class="container list_cartas">
+                <h4 class="my-3 fw-bold">Ingresar cartas de precentación</h4>
+                <form action="" method="POST" enctype="multipart/form-data" id="ingresar_card_form">
+                  {% csrf_token %}
+                  <div class="my-1 text-start">
+                    <label class="my-1" for="">Imagen : </label>
+                    <input class="form-control form-control-sm" id="formFileSm" type="file" name="img_card" required>
+                    {% if form_card.img_card.errors %}
+                    <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                      {{form_card.img_card.errors}}
+                    </div>
+                    {% endif %}
+
+                  </div>
+                  <div class="my-1 text-start">
+                    <label class="my-1" for="">Nombre : </label>
+                    <input class="form-control form-control-sm" type="text" placeholder="Nombre" required
+                      aria-label=".form-control-sm example" name="nombre_card" value="{{form_card.nombre_card.value}}">
+                    {% if form_card.nombre_card.errors %}
+                    <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                      {{form_card.nombre_card.errors}}
+                    </div>
+                    {%endif%}
+                  </div>
+                  <div class="my-1 text-start">
+                    <label class="my-1" for="">Cargo : </label>
+                    <input class="form-control form-control-sm" type="text" placeholder="Cargo" required
+                      aria-label=".form-control-sm example" name="cargo_card" value="{{form_card.cargo_card.value}}">
+                    {% if form_card.cargo_card.errors %}
+                    <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                      {{form_card.cargo_card.errors}}
+                    </div>
+                    {%endif%}
+                  </div>
+                  <div class="my-1 text-start">
+                    <label class="my-1" for="">Descripcion:</label>
+                    <input class="form-control form-control-sm" type="text" placeholder="Descripción" required
+                      aria-label=".form-control-sm example" name="descrip_card"
+                      value="{{form_card.descrip_card.value}}">
+                    {% if form_card.descrip_card.errors %}
+                    <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                      {{form_card.descrip_card.errors}}
+                    </div>
+                    {%endif%}
+                  </div>
+                  <div class="text-start mt-5 my-1 text-center">
+                    <button class="btn btn-primary" type="submit" form="ingresar_card_form" id="ingresar_card"
+                      name="ingresar_card">Enviar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="col-10 col-xl-5 col-md-6 col-sm-10 my-3 text-start">
+              <div class="container list_cartas">
+                <h4 class="my-3 fw-bold">Lista de cartas index</h4>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col"></th>
+                      <th scope="col">Nombre</th>
+                      <th scope="col">Cargo</th>
+                      <th scope="col">Descripción</th>
+                      <th scope="col">Editar</th>
+                      <th scope="col">Eliminar</th>
+
+                    </tr>
+                  </thead>
+                  <tbody class="table-group-divider">
+                    {% for perfil in perfil_card %}
+                    <tr>
+                      <th scope="row">{{perfil.id}}</th>
+                      <td>{{perfil.nombre_card | truncatechars:10}}</td>
+                      <td>{{perfil.cargo_card | truncatechars:10}}</td>
+                      <td>{{perfil.descrip_card | truncatechars:10}}</td>
+                      <td>
+                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                          data-bs-target="#Modal_perfil_{{perfil.id}}">
+                          <img src="{% static 'img/editar.png' %}" width="20px">
+                        </button>
+                      </td>
+                      <td>
+                        <form action="" method="POST" id="delete_card_{{perfil.id}}">
+                          {% csrf_token %}
+                          <input type="hidden" value="{{perfil.id}}" name="id_delete_card">
+                          <button type="submit" class="btn btn-danger" form="delete_card_{{perfil.id}}"
+                            id="card_delete{{perfil.id}}" name="card_delete">
+                            <img src="{% static 'img/basura.png' %}" width="20px">
+                          </button>
+                        </form>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+      </div>
+
+      <div class="tab-pane fade" id="navPublic" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+
+
+        <div class="container text-center">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="container box_carta">
+                <h4>Ingresar publicación</h4>
+                <nav>
+                  <div class="nav nav-pills nav-justified" id="nav-tab" role="tablist">
+                    <button class="nav-link  nav-link-btn active" id="normal-tab" data-bs-toggle="tab"
+                      data-bs-target="#normal-tab-pane" type="button" role="tab" aria-controls="normal-tab-pane"
+                      aria-selected="true">Normal</button>
+                    <button class="nav-link nav-link-btn" id="cursos-profile-tab" data-bs-toggle="tab"
+                      data-bs-target="#nav-cursos" type="button" role="tab" aria-controls="cursos-profile"
+                      aria-selected="false">Cursos</button>
+                  </div>
+                </nav>
+
+
+
+                <!-- publicidad normal -->
+
+                <div class="tab-content" id="myTabContent">
+                  <div class="tab-pane fade show active" id="normal-tab-pane" role="tabpanel"
+                    aria-labelledby="normal-tab" tabindex="0">
+
+                    <div class="text-start">
+                    <form action="" method="POST" enctype="multipart/form-data" id="ingresar_publi_form">
+                      {% csrf_token %}
+                      <div><br>
+                        <label>Imagen : </label>
+                        <input class="form-control form-control-sm" id="formFileSm" type="file" name="img_pub" required>
+                        {% if form_public.img_pub.errors%}
+                        <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                          {{form_public.img_pub.errors}}
+                        </div>
+                        {%endif%}
+                      </div>
+                      <div><br>
+                        <label for="">Nombre : </label>
+                        <input class="form-control form-control-sm" type="text" placeholder="Nombre" required
+                          aria-label=".form-control-sm example" name="nombre_pub"
+                          value="{{form_public.nombre_pub.value}}">
+                        {% if form_public.nombre_pub.errors %}
+                        <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                          {{form_public.nombre_pub.errors}}
+                        </div>
+                        {%endif%}
+                      </div>
+                      <div><br>
+                        <label for="">Descripcion:</label>
+                        <input class="form-control form-control-sm" type="text" placeholder="Descripción" required
+                          aria-label=".form-control-sm example" name="descrip_pub"
+                          value="{{form_public.descrip_pub.value}}">
+                        {% if form_public.descrip_pub.errors%}
+                        <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                          {{form_public.descrip_pub.errors}}
+                        </div>
+                        {%endif%}
+                      </div><br>
+                      <div class="text-center">
+                        <button type="submit" class="btn btn-primary" form="ingresar_publi_form"
+                          name="public_ingresa">Enviar</button>
+                      </div>
+                    </form>
+                    </div>
+                    
+                  </div>
+                  <!-- publicidad cursos -->
+                  <div class="tab-pane fade" id="nav-cursos" role="tabpanel" aria-labelledby="nav-cursos-tab"
+                    tabindex="0">
+                    <br>
+                    <form action="" method="POST" id="public_cursos">
+                      {% csrf_token %}
+                      <div class="input-group mb-3">
+                        <span class="input-group-text"> Curso</span>
+                        <select name="id_curso_pub" id="id_curso_pub" class="form-select" required>
+                          <option selected disabled>Ver selecciones</option>
+                          {% for curso in cursos %}
+                          <option value="{{curso.id}}">N°{{curso.id}} -- {{curso.nombre_curso}}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <button type="submit" class="btn btn-primary" form="public_cursos" id="curso_public"
+                        name="curso_public">Enviar</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-8">
+              <div class="container list_cartas">
+                <h4>Lista de publicaciones index</h4>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Nombre</th>
+                      <th scope="col">Descripción</th>
+                      <th scope="col">Editar</th>
+                      <th scope="col">Eliminar</th>
+                    </tr>
+                  </thead>
+                  <tbody class="table-group-divider">
+                    <tr>
+                      {% for public in publicidad %}
+                    <tr>
+                      <th scope="row">{{public.id}}</th>
+                      <td>{{public.nombre_pub}}</td>
+                      <td>{{public.descrip_pub}}</td>
+                      <td>
+                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                          data-bs-target="#Modal_public_{{public.id}}">
+                          <img src="{% static 'img/editar.png' %}" width="20px">
+                        </button>
+                      </td>
+                      <td>
+                        <form action="" method="POST" id="delete_public{{public.id}}">
+                          {% csrf_token %}
+                          <input type="hidden" value="{{public.id}}" name="id_delete_public">
+                          <button type="submit" form="delete_public{{public.id}}" class="btn btn-danger"
+                            name="public_delete" id="public_delete{{public.id}}"><img
+                              src="{% static 'img/basura.png' %}" width="20px"></button>
+                        </form>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- Modals -->
+
+
+  {% for perfil2 in perfil_card %}
+  <!-- Modal perfil -->
+  <div class="modal fade" id="Modal_perfil_{{perfil2.id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Carta precentación N°{{perfil2.id}}</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="container text-center ">
+            <form action="" method="POST" enctype="multipart/form-data" id="update_card_{{perfil2.id}}">
+              {% csrf_token %}
+              <input type="hidden" value="{{perfil2.id}}" id="id_update" name="id_update">
+              <div class="row justify-content-center  align-items-center ">
+                <div class="col-md-6">
+                  <div class="container text-center">
+                    <div class="row">
+                      <div class="col-4 text-start">
+                        <h6>Nombre :</h6>
+                      </div>
+                      <div class="col-8 text-start">
+                        <input type="text" style="width: 350px;" id="nombre_card" name="nombre_card"
+                          class="form-control" value="{{perfil2.nombre_card.value}}">
+                        {% if form_card_up.nombre_card.errors%}
+                        <div class="alert alert-warning alert-bg " role="alert">
+                          {{form_card_up.nombre_card.errors}}
+                        </div>
+                        {%endif%}
+
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-4 text-start">
+                        <h6>Cargo :</h6>
+                      </div>
+                      <div class="col-8 text-start">
+                        <textarea type="text" id="cargo_card" name="cargo_card" class="form-control"
+                          style="width: 350px; height: 150px;">{{perfil2.cargo_card}}</textarea>
+                        {% if form_card_up.cargo_card.errors%}
+                        <div class="alert alert-warning alert-bg " role="alert">
+                          {{form_card_up.cargo_card.errors}}
+                        </div>
+                        {%endif%}
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-4 text-start">
+                        <h6>Descripcion :</h6>
+                      </div>
+                      <div class="col-8 text-start">
+                        <textarea type="text" id="descrip_card" name="descrip_card" class="form-control"
+                          style="width: 350px; height: 150px;">{{perfil2.descrip_card}}</textarea>
+                        {% if form_card_up.descrip_card.errors%}
+                        <div class="alert alert-warning alert-bg " role="alert">
+                          {{form_card_up.descrip_card.errors}}
+                        </div>
+                        {%endif%}
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="col-sm-5 ">
+                  <h4></h4>
+                  <h6>Imagen</h6>
+                  <input type="file" class="form-control form-control-sm" name="img_card_up" id="img_card_up">
+                  {% if form_card_up%}
+                  <div class="alert alert-warning alert-bg " role="alert">
+                    {{form_card_up.img_card.errors}}
+                  </div>
+                  {%endif%}
+                  <img src="{{perfil2.img_card.url}}" width="350px"><br>
+
+                </div>
+              </div>
+            </form>
+
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" form="update_card_{{perfil2.id}}" class="btn btn-primary" name="card_update"
+            id="card_update">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+
+
+  {% for public in publicidad %}
+  <!-- Modal publicidad -->
+  <div class="modal fade" id="Modal_public_{{public.id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Publicidad N°{{public.id}}</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="" method="post" enctype="multipart/form-data" id="update_public_{{public.id}}">
+            {%csrf_token%}
+            <input type="hidden" value="{{public.id}}" name="id_update_pub" id="id_update_pub_{{public.id}}">
+            <div class="container text-center ">
+              <div class="row justify-content-center  align-items-center ">
+                <div class="col-md-1"></div>
+                <div class="col-md-6">
+                  <div class="container text-center">
+                    <div class="row">
+                      <div class="col-4 text-start">
+                        <h6>Titulo :</h6>
+                      </div>
+                      <div class="col-8 text-start">
+
+                        <input type="text" style="width: 350px;" id="nombre_pub" name="nombre_pub" class="form-control"
+                          value="{{public.nombre_pub}}">
+                        {% if form_public_up.nombre_pub.errors%}
+                        <div class="alert alert-warning alert-bg " role="alert">
+                          {{form_public_up.nombre_pub.errors}}
+                        </div>
+                        {%endif%}
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-4 text-start">
+                        <h6>Descripcion :</h6>
+                      </div>
+                      <div class="col-8 text-start">
+                        <textarea type="text" id="descrip_pub" name="descrip_pub" class="form-control"
+                          style="width: 350px; height: 150px;">{{public.descrip_pub}}</textarea>
+                        {% if form_public_up.descrip_pub.errors%}
+                        <div class="alert alert-warning alert-bg " role="alert">
+                          {{form_public_up.descrip_pub.errors}}
+                        </div>
+                        {%endif%}
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="col-sm-5 ">
+                  <h4></h4>
+                  <h6>Imagen</h6>
+                  <input type="file" class="form-control" name="img_pub_up" id="img_pub_up">
+                  {% if form_public_up.img_pub_up.errors%}
+                  <div class="alert alert-warning alert-bg " role="alert">
+                    {{form_public_up.img_pub_up.errors}}
+                  </div>
+                  {%endif%}
+                  <br>
+                  <img src="{{public.img_pub.url}}" class="card-img-top">
+                </div>
+              </div>
+
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" form="update_public_{{public.id}}" class="btn btn-primary" name="public_update"
+            id="public_update">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+
+
+  <footer class="text-center bg-primary text-white">
+    <section class="d-flex justify-content-center pb-3 border-bottom">
+      <section class="mt-3">
+        <!-- Facebook -->
+        <a class="btn btn-outline-light btn-floating m-1" href="https://www.facebook.com/hggbconcepcion/"
+          role="button"><i class="fab fa-facebook-f"></i></a>
+        <!-- Twitter -->
+        <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/hggbconcepcion" role="button"><i
+            class="fab fa-twitter"></i></a>
+        <!-- Instagram -->
+        <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/hggbconcepcion/"
+          role="button"><i class="fab fa-instagram"></i></a>
+      </section>
+    </section>
+    <section class="">
+      <div class="container text-center text-md-start mt-5">
+        <div class="row mt-3">
+          <div class="col-md-5 col-lg-6 col-xl-6 mx-auto mb-4">
+            <h6 class="text-uppercase fw-bold mb-4">
+              <img src="{% static 'img/logo_salud.png' %}" alt="Logo" style="width:100px;" class="rounded-pill">
+            </h6>
+          </div>
+          <div class="col-md-5 col-lg-6 col-xl-6 mx-auto mb-4">
+            <p class="lh-sm text-justify">
+              Nuestro compromiso es brindar capacitación en salud de calidad, manteniendo a nuestro
+              personal
+              actualizado
+              y preparado para ofrecer la mejor atención posible. Nos esforzamos por promover un
+              ambiente
+              de
+              aprendizaje
+              continuo y colaboración con expertos en el campo. Juntos, trabajamos para impulsar el
+              avance
+              de la salud
+              y
+              mejorar la calidad de vida de nuestra comunidad.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.025);">
+      © 2023 Copyright:
+      <a class="text-reset fw-bold" href=" ">Servicio de Capacitacion a la Salud</a>
+    </div>
+  </footer>
+
+  <!-- Modal  carta add-->
+  <div class="modal fade" id="agregado_aceptado" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Aviso</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-success d-flex align-items-center" role="alert" style="height: 80px;">
+            <img class="img-aviso-estado" src="{% static 'img/aprobado.png' %}" width="65px">
+            <div class="text-center">
+              <h6>{{agregado_acept}}</h6>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal  delete -->
+  <div class="modal fade" id="aviso_delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Aviso de eliminación</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-danger d-flex align-items-center" role="alert" style="height: 80px;">
+            <img class="img-aviso-estado" src="{% static 'img/formulario_delete.png' %}" width="65px">
+            <div class="text-center">
+              <h6>{{instan_delete}}</h6>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   <!-- Modal  modificacion -->
+   <div class="modal fade" id="aviso_mod" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Aviso de modificación</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-success d-flex align-items-center" role="alert" style="height: 80px;">
+            <img class="img-aviso-estado" src="{% static 'img/form_mod.png' %}" width="65px">
+            <div class="text-center">
+              <h6>{{modficacion}}</h6>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- scripts agregado correctamente -->
+  {% if agregado_acept %}
+  <script>
+    $(document).ready(function () {
+      const myModal = new bootstrap.Modal('#agregado_aceptado');
+      myModal.show();
+    });
+  </script>
+  {% endif %}
+
+  <!-- scripts Modal llamado  eliminado-->
+  {% if instan_delete %}
+  <script>
+    $(document).ready(function () {
+      const myModal = new bootstrap.Modal('#aviso_delete');
+      myModal.show();
+    });
+  </script>
+  {%endif%}
+
+  <!-- scripts para que se carge en la pesataña de lista -->
+  {% if lista %}
+  <script>
+    $(document).ready(function () {
+      const bsTab = new bootstrap.Tab('#nav-profile-tab1');//esto llama al btn
+      bsTab.show();
+    });
+  </script>
+  {% endif %}
+
+
+  <!-- scripts Modal llamado  modificacion-->
+  {% if modficacion %}
+  <script>
+    $(document).ready(function () {
+      const myModal = new bootstrap.Modal('#aviso_mod');
+      myModal.show();
+    });
+  </script>
+  {%endif%}
+
+  {% if form_card_up %}
+  <script>
+      $(document).ready(function () {
+          const myModal = new bootstrap.Modal('#Modal_perfil_{{form_card_up.id_update.value}}');
+          myModal.show();
+      });
+  </script>
+{%endif%}
+
+{% if form_public_up %}
+    <script>
+        $(document).ready(function () {
+            const myModal = new bootstrap.Modal('#Modal_public_{{form_curso_up.id_update_pub.value}}');
+            myModal.show();
+        });
+    </script>
+{%endif%}
+
+
+
+
+  <!-- CSS only -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.js"></script>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+    crossorigin="anonymous"></script>
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"
+    integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"
+    integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ"
+    crossorigin="anonymous"></script>
+  <!-- AJAX -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+    crossorigin="anonymous"></script>
+
+</body>
+
+</html>
+{% endblock content %}

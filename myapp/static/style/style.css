@@ -1,0 +1,131 @@
+.colorbar {
+  background-color: aquamarine;
+}
+
+#menu {
+  border: 1px solid black;
+}
+
+.box_carta {
+  padding: 20px;
+  border: 1px solid black;
+  margin-top: 10px;
+}
+
+.list_cartas {
+  padding: 20px;
+  margin-top: 10px;
+}
+
+#logo_salud_icono {
+  border-radius: 400px;
+  width: 60px;
+}
+
+
+#log_back {
+    margin: 0;
+    padding: 0;
+    background: url( ../img/back_log2.jpg) no-repeat center top;
+    background-size: cover;
+    font-family: sans-serif;
+    height: 100vh;
+  }
+.hola{
+  margin-top: 10px;
+  background-color: aqua;       
+  border: solid black 1px;
+}
+
+.login-box {
+    width: 320px;
+    background: rgb(233, 233, 233);
+    color: rgb(0, 0, 0);
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    padding: 70px 30px;
+    border: solid 1px black;
+  }
+  
+  .login-box .avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    position: absolute;
+    top: -50px;
+    left: calc(50% - 50px);
+  }
+  
+  .login-box h1 {
+    margin: 0;
+    padding: 0 0 20px;
+    text-align: center;
+    font-size: 22px;
+  }
+  
+  .login-box label {
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+    display: block;
+  }
+  
+  .login-box input {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .login-box input[type="text"], .login-box input[type="password"] {
+    border: none;
+    border-bottom: 1px solid rgb(0, 67, 252);
+    background: transparent;
+    outline: none;
+    height: 40px;
+    color: rgb(0, 0, 255);
+    font-size: 16px;
+  }
+  
+  .login-box input[type="submit"] {
+    border: none;
+    outline: none;
+    height: 40px;
+    background: #0061fc;
+    color: rgb(0, 0, 0);
+    font-size: 18px;
+    border-radius: 20px;
+  }
+  
+  .login-box input[type="submit"]:hover {
+    cursor: pointer;
+    background: #ffc107;
+    color: #000;
+  }
+  
+  .login-box a {
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 20px;
+    color: darkgrey;
+  }
+  
+  .login-box a:hover {
+    color: #fff;
+  }
+
+  .navbar{
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    flex-direction: column;
+    align-content: flex-start;
+    
+}
+.navbar-brand{
+    margin-left: 15px;
+}
+.col-sm-6{
+    border: 15px solid white;
+}

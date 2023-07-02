@@ -1,0 +1,494 @@
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" alt="Logo" type="image/png" class="rounded-pill" href="{% static 'img/icono_salud.png' %}">
+  <title>Admin/user</title>
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <!-- MDB -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.css" rel="stylesheet" />
+  <!-- CSS only -->
+  <link rel="stylesheet" href="{% static 'estilos/style.css' %}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <!-- AJAX -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-sm navbar-light bg-primary">
+    <div class="container-fluid justify-content-center">
+      <a class="navbar-brand" href="/index/">
+        <img src="{% static 'img/logo_salud.png' %}" alt="Logo" style="width:70px;" class="rounded-pill">
+      </a>
+      <button class="navbar-toggler ms-auto" type="button" data-mdb-toggle="collapse"
+        data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <i class="fas fa-chevron-circle-down"></i>
+      </button>
+    </div>
+    <div class="container collapse navbar-collapse" id="mynavbar">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="/mod_index/">MODIFICAR INDEX</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/cursos_add/">CURSOS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/consultas/">LISTA DE CONSULTAS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/resgitrar/">REGISTRAR</a>
+          </li>
+        </ul>
+        <span class="navbar-text">
+          <a class="nav-link active" aria-current="page" href="/logout/"><img src="{% static 'img/salida.png' %}"
+              width="40px">
+          </a>
+        </span>
+      </div>
+    </div>
+  </nav>
+  <div class="container text-center mt-3">
+    <nav>
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link active text-dark" id="home-tab" data-bs-toggle="tab" data-bs-target="#Agregar_cursos"
+          type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Crear usuario</button>
+        <button class="nav-link text-dark" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#Lista_cursos"
+          type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Lista de Usuarios</button>
+      </div>
+    </nav>
+
+  </div>
+
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="Agregar_cursos" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <div class="container">
+              <h1>Crear nuevo usuario</h1>
+              <form action="" method="POST" id="user_create">
+                {%csrf_token%}
+
+                <label for="id_nombres" class="form-label">Nombre Completo:</label>
+                <input type="text" class="form-control" name="nombres" maxlength="70" required id="id_nombres" value="{{form_register.nombres.value}}">
+                {% if form_register.nombres.errors %}
+                <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                  {{ form_register.nombres.errors }}</div>
+                {% endif %}
+
+                <label for="id_email" class="form-label">Email:</label>
+                <input type="email" class="form-control" name="email" maxlength="100" required id="id_email" value="{{form_register.email.value}}">
+                {% if form_register.email.errors %}
+                <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                  {{ form_register.email.errors }}</div>
+                {% endif %}
+
+                <label for="id_celular" class="form-label">Celular:</label>
+                <input type="number" class="form-control" name="celular" required id="id_celular" value="{{form_register.celular.value}}">
+                {% if form_register.celular.errors %}
+                {{ form_register.celular.errors }}
+                {% endif %}
+
+                <label for="id_username" class="form-label">Nombre de usuario:</label>
+                <input type="text" class="form-control" name="username" maxlength="70" required id="id_username" value="{{form_register.username.value}}">
+                {% if form_register.username.errors %}
+                <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                  {{ form_register.username.errors }}</div>
+                {% endif %}
+
+                <label for="id_password1" class="form-label">Contraseña:</label>
+                <input type="password" class="form-control" name="password1" autocomplete="new-password" required
+                  id="id_password1">
+                {% if form_register.password1.errors %}
+                <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                  {{ form_register.password1.errors }}</div>
+                {% endif %}
+
+                <label for="id_password2" class="form-label">Repetir Contraseña (confirmación):</label>
+                <input type="password" class="form-control" name="password2" autocomplete="new-password" required
+                  id="id_password2">
+                {% if form_register.password2.errors %}
+                <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                  {{ form_register.password2.errors }}</div>
+                {% endif %}
+
+                <button class="btn btn-primary my-3 text-white fw-bold" form="user_create" name="create_user"
+                  id="create_user">Enviar</button>
+              </form>
+            </div>
+          </div>
+          <div class="col pint2">
+            <div class="container text-start">
+              <h3>Recuerda usar</h3>
+              <h6>En Correo</h6>
+              <p>Solo se admiten Correos terminados en:</p>
+              <div class="pint">
+
+                <ul>
+                  <li>Hotmail</li>
+                  <li>Gmail</li>
+                  <li>Outlook</li>
+                </ul>
+              </div>
+              <h6>En Contraseña</h6>
+              <div class="pint">
+                <span>
+                  <ul class="helptext">
+                    <li>Su contraseña no puede asemejarse tanto a su otra información personal.</li>
+                    <li>Su contraseña debe contener al menos 8 caracteres.</li>
+                    <li>Su contraseña no puede ser una clave utilizada comúnmente.</li>
+                    <li>Su contraseña no puede ser completamente numérica.</li>
+                  </ul>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane fade" id="Lista_cursos" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+      <div class="container">
+        <h1> Lista de usuarios</h1>
+        <div class="table-responsive my-5">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nombre Completo</th>
+                <th scope="col">Ultimo inicio</th>
+                <th scope="col">Usuario</th>
+                <th scope="col">Email</th>
+                <th scope="col">Celular</th>
+                <th scope="col">Admin</th>
+                <th scope="col">Editar</th>
+                <th scope="col">Eliminar</th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider">
+
+              {% for user in usuarios %}
+              <tr>
+                <th scope="row">{{ user.id }}</th>
+                <td>{{ user.nombres }}</td>
+                <td>{{ user.last_login }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.celular }}</td>
+                <td>
+                  {% if user.is_staff %}
+                  <img src="{% static 'img/aprobado_user.png'%}" height="25px">
+                  {%else%}
+                  <img src="{% static 'img/rechazado_user.png'%}" height="25px">
+                  {%endif%}
+                </td>
+                <td>
+                  {% if user.is_staff %}
+                  <button type="button" class="btn btn-warning" disabled>
+                    <img src="{% static 'img/editar.png' %}" width="20px">
+                  </button>
+                  {%else%}
+                  <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                    data-bs-target="#Modal_user_{{ user.id }}">
+                    <img src="{% static 'img/editar.png' %}" width="20px">
+                  </button>
+                  {%endif%}
+
+                </td>
+                <td>
+                  {% if user.is_staff %}
+                  <button type="submit" class="btn btn-danger" disabled><img src="{% static 'img/basura.png' %}"
+                      width="20px"></button>
+                  {%else%}
+                  <form action="" method="POST" id="delete_froms_{{user.id}}">
+                    {% csrf_token %}
+                    <input type="hidden" name="usuario_eliminado" id="id_usuario_eliminado" value="{{user.id}}">
+                    <button type="submit" class="btn btn-danger" form="delete_froms_{{ user.id }}"
+                      name="delete_user" id="delete_user_{{user.id}}">
+                      <img src="{% static 'img/basura.png' %}" width="20px">
+                    </button>
+                  </form>
+                  {%endif%}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% for user in usuarios %}
+  <!-- Modal publicidad -->
+  <div class="modal fade" id="Modal_user_{{user.id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Usuario N°{{user.id}}</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="" method="POST" id="update_user_form_{{user.id}}">
+            {% csrf_token %}
+            <input type="hidden" name="id_update_user" value="{{user.pk}}">
+            <label class="form-label">Email</label>
+            <input type="email" value="{{ user.email }}" class="form-control" name="email">
+            {% if form_update.email.errors %}
+                <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                  {{ form_update.email.errors }}</div>
+            {% endif %}
+            <label class="form-label">Celular</label>
+            <input type="text" value="{{ user.celular }}" class="form-control" name="celular">
+            {% if form_update.celular.errors %}
+                <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                  {{ form_update.celular.errors }}</div>
+                {% endif %}
+            <label class="form-label">Nombres</label>
+            <input type="text" value="{{ user.nombres }}" class="form-control" name="nombres">
+            {% if form_update.nombres.errors %}
+                <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                  {{ form_update.nombres.errors }}</div>
+                {% endif %}
+            <label class="form-label">Username</label>
+            <input type="text" value="{{ user.username }}" class="form-control" name="username">
+            {% if form_update.username.errors %}
+                <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                  {{ form_update.username.errors }}</div>
+                {% endif %}
+            <label class="form-label">Nueva Contraseña</label>
+            <input type="password" class="form-control" name="password">
+            {% if form_update.password.errors %}
+                <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                  {{ form_update.password.errors }}</div>
+                {% endif %}
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" form="update_user_form_{{user.id}}" class="btn btn-primary" name="user_update"
+            id="user_update">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+  <footer class="text-center bg-primary text-white">
+    <section class="d-flex justify-content-center pb-3 border-bottom">
+      <section class="mt-3">
+        <!-- Facebook -->
+        <a class="btn btn-outline-light btn-floating m-1" href="https://www.facebook.com/hggbconcepcion/"
+          role="button"><i class="fab fa-facebook-f"></i></a>
+        <!-- Twitter -->
+        <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/hggbconcepcion" role="button"><i
+            class="fab fa-twitter"></i></a>
+        <!-- Instagram -->
+        <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/hggbconcepcion/"
+          role="button"><i class="fab fa-instagram"></i></a>
+      </section>
+    </section>
+    <section class="">
+      <div class="container text-center text-md-start mt-5">
+        <div class="row mt-3">
+          <div class="col-md-5 col-lg-6 col-xl-6 mx-auto mb-4">
+            <h6 class="text-uppercase fw-bold mb-4">
+              <img src="{% static 'img/logo_salud.png' %}" alt="Logo" style="width:100px;" class="rounded-pill">
+            </h6>
+          </div>
+          <div class="col-md-5 col-lg-6 col-xl-6 mx-auto mb-4">
+            <p class="lh-sm text-justify">
+              Nuestro compromiso es brindar capacitación en salud de calidad, manteniendo a nuestro
+              personal
+              actualizado
+              y preparado para ofrecer la mejor atención posible. Nos esforzamos por promover un
+              ambiente
+              de
+              aprendizaje
+              continuo y colaboración con expertos en el campo. Juntos, trabajamos para impulsar el
+              avance
+              de la salud
+              y
+              mejorar la calidad de vida de nuestra comunidad.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.025);">
+      © 2023 Copyright:
+      <a class="text-reset fw-bold" href=" ">Servicio de Capacitacion a la Salud</a>
+    </div>
+  </footer>
+
+
+
+  <!-- Modal  carta add-->
+  <div class="modal fade" id="agregado_aceptado" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Aviso</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-success d-flex align-items-center" role="alert" style="height: 80px;">
+            <img class="img-aviso-estado" src="{% static 'img/aprobado.png' %}" width="65px">
+            <div class="text-center">
+              <h6>{{agregado_acept}}</h6>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal  delete -->
+  <div class="modal fade" id="aviso_delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Aviso de eliminación</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-danger d-flex align-items-center" role="alert" style="height: 80px;">
+            <img class="img-aviso-estado" src="{% static 'img/formulario_delete.png' %}" width="65px">
+            <div class="text-center">
+              <h6>{{instan_delete}}</h6>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal  modificacion -->
+  <div class="modal fade" id="aviso_mod" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Aviso de modificación</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-success d-flex align-items-center" role="alert" style="height: 80px;">
+            <img class="img-aviso-estado" src="{% static 'img/form_mod.png' %}" width="65px">
+            <div class="text-center">
+              <h6>{{modificacion}}</h6>
+            </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-danger"  data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<!-- scripts para que se carge en la pesataña de lista -->
+{% if lista %}
+<script>
+  $(document).ready(function () {
+    const bsTab = new bootstrap.Tab('#nav-profile-tab');//esto llama al btn
+    bsTab.show();
+  });
+</script>
+{% endif %}
+  <!-- scripts agregado correctamente -->
+  {% if agregado_acept %}
+  <script>
+    $(document).ready(function () {
+      const myModal = new bootstrap.Modal('#agregado_aceptado');
+      myModal.show();
+    });
+  </script>
+  {% endif %}
+  <!-- scripts Modal llamado  eliminado-->
+  {% if instan_delete %}
+  <script>
+    $(document).ready(function () {
+      const myModal = new bootstrap.Modal('#aviso_delete');
+      myModal.show();
+    });
+  </script>
+  {%endif%}
+<!-- scripts Modal llamado  modificacion-->
+{% if modificacion %}
+<script>
+  $(document).ready(function () {
+    const myModal = new bootstrap.Modal('#aviso_mod');
+    myModal.show();
+  });
+</script>
+{%endif%}
+
+{% if form_update %}
+    <script>
+        $(document).ready(function () {
+            const myModal = new bootstrap.Modal('#Modal_user_{{form_update.id_update_user.value}}');
+            myModal.show();
+        });
+    </script>
+{%endif%}
+
+
+
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.js"></script>
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+    crossorigin="anonymous"></script>
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"
+    integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"
+    integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ"
+    crossorigin="anonymous"></script>
+  <!-- AJAX -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+    crossorigin="anonymous"></script>
+
+
+
+</body>
+
+</html>
+
+{% endblock content %}

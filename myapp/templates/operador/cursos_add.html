@@ -1,0 +1,1129 @@
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" alt="Logo" type="image/png" class="rounded-pill" href="{% static 'img/icono_salud.png' %}">
+    <title>Operador/cursos</title>
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.css" rel="stylesheet" />
+    <!-- CSS only -->
+    <link rel="stylesheet" href="{% static 'estilos/style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <!-- AJAX -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm navbar-light bg-primary">
+        <div class="container-fluid justify-content-center">
+            <a class="navbar-brand" href="/index/">
+                <img src="{% static 'img/logo_salud.png' %}" alt="Logo" style="width:70px;" class="rounded-pill">
+            </a>
+            <button class="navbar-toggler ms-auto" type="button" data-mdb-toggle="collapse"
+                data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <i class="fas fa-chevron-circle-down"></i>
+            </button>
+        </div>
+        <div class="container collapse navbar-collapse" id="mynavbar">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/mod_index/">MODIFICAR INDEX</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cursos_add/">CURSOS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/consultas/">LISTA DE CONSULTAS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/resgitrar/">REGISTRAR</a>
+                    </li>
+                </ul>
+                <span class="navbar-text">
+                    <a class="nav-link active" aria-current="page" href="/logout/"><img
+                            src="{% static 'img/salida.png' %}" width="40px">
+                    </a>
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container text-center mt-3">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active text-dark" id="home-tab" data-bs-toggle="tab"
+                    data-bs-target="#Agregar_cursos" type="button" role="tab" aria-controls="home-tab-pane"
+                    aria-selected="true">Agregar Cursos</button>
+                <button class="nav-link text-dark" id="nav-profile-tab1" data-bs-toggle="tab"
+                    data-bs-target="#Lista_cursos" type="button" role="tab" aria-controls="nav-profile"
+                    aria-selected="false">Lista Cursos</button>
+            </div>
+        </nav>
+    </div>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="Agregar_cursos" role="tabpanel" aria-labelledby="home-tab"
+            tabindex="0">
+            <div class="container text-center">
+                <div class="row justify-content-center">
+                    <div class="col-10 col-xl-4 col-md-5 col-sm-10 my-3">
+                        <h4>Vista previa</h4>
+                        <div class="container">
+                            <div class="card">
+                                <img id="mostrarImagen" class="card-img-top" src="{% static 'img/no_img.jpg' %}"></img>
+                                <div class="card-body">
+                                    <h5 class="card-title" id="para_nombre"></h5>
+                                    <p class="card-text" id="para_precentacion"></p>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">Hospital : <label id="para_hospital"> </li>
+                                        <li class="list-group-item">Finaliza : <label id="para_end_time"> </li>
+                                    </ul>
+                                    <a href="#" class="btn btn-primary">Ver curso</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-0 col-xl-3 col-md-1">
+                    </div>
+                    <div class="col-10 col-xl-5 col-md-6 col-sm-10 my-3 text-start">
+                        <form action="" method="POST" enctype="multipart/form-data" id="ingresar_curso">
+                            {%csrf_token %}
+                            <h4 class="text-center">Ingresar Cursos</h4>
+                            <div class="cursos-add-box">
+                                <label for="">Nombre del Curso:</label>
+                                <input class="form-control form-control-sm" type="text" placeholder="Nombre"
+                                    aria-label=".form-control-sm example" name="nombre_curso" id="campo_nombre"
+                                    onchange="changeValue(this.value)" value="{{form_addcurso.nombre_curso.value}}"
+                                    required>
+                                {% if form_addcurso.nombre_curso.errors %}
+                                <div class="alert alert-warning alert-bg" role="alert" style="height: 60px;">
+                                    {{form_addcurso.nombre_curso.errors}}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="cursos-add-box">
+                                <label for="">Imagen:</label>
+                                <input class="form-control form-control-sm" id="img_curso" type="file" name="img_curso"
+                                    required>
+                                {% if form_addcurso.img_curso.errors %}
+                                <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                                    {{form_addcurso.img_curso.errors}}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="cursos-add-box">
+                                <label for="">Formulario de postulación:</label>
+                                <input class="form-control form-control-sm" id="formFiledSm" type="file"
+                                    name="form_carga_curso" value="{{form_addcurso.form_carga_curso.value}}" required>
+                                {% if form_addcurso.form_carga_curso.errors %}
+                                <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                                    {{form_addcurso.form_carga_curso.errors}}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="cursos-add-box">
+                                <label for="">Descripción precentación:</label>
+                                <textarea class="form-control form-control-sm" type="text"
+                                    placeholder="Descripción máximo 260 caracteres"
+                                    aria-label=".form-control-sm example" name="descrip_corta_curso" required
+                                    id="campo_precentacion"
+                                    onchange="changeValue(this.value)">{{form_addcurso.descrip_corta_curso.value}}</textarea>
+                                {% if form_addcurso.descrip_corta_curso.errors %}
+                                <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                                    {{form_addcurso.descrip_corta_curso.errors}}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="cursos-add-box">
+                                <label for="">Descripción completa:</label>
+                                <textarea class="form-control form-control-sm" type="text"
+                                    placeholder="Descripción completa" aria-label=".form-control-sm example" required
+                                    name="descrip_larga_curso"
+                                    id="campo_descomplet">{{form_addcurso.descrip_larga_curso.value}}</textarea>
+                                {% if form_addcurso.descrip_larga_curso.errors %}
+                                <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                                    {{form_addcurso.descrip_larga_curso.errors}}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="cursos-add-box">
+                                <label for="">Requisitos de aprobación:</label>
+                                <input class="form-control form-control-sm" type="text" placeholder="Requisistos"
+                                    required aria-label=".form-control-sm example" name="requisitos_curso"
+                                    value="{{form_addcurso.requisitos_curso.value}}">
+                                {% if form_addcurso.requisitos_curso.errors %}
+                                <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                                    {{form_addcurso.requisitos_curso.errors}}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="cursos-add-box">
+                                <label for="">Fecha de inicio de postulación:</label>
+                                <input class="form-control form-control-sm" id="formFileSm" type="date" required
+                                    name="time_start_curso" value="{{form_addcurso.time_start_curso|date:'Y-m-d'}}">
+                                {% if form_addcurso.time_start_curso.errors %}
+                                <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                                    {{form_addcurso.time_start_curso.errors}}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="cursos-add-box">
+                                <label for="">Fecha de termino de postulación:</label>
+                                <input class="form-control form-control-sm" id="formFileSm" type="date" required
+                                    name="time_end_curso" id="time_end_curso" onchange="prueba(this)"
+                                    value="{{form_addcurso.time_end_curso|date:'Y-m-d'}}">
+                                {% if form_addcurso.time_end_curso.errors %}
+                                <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                                    {{form_addcurso.time_end_curso.errors}}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="cursos-add-box">
+                                <label for="">Hospital:</label>
+                                <div class="input-group">
+                                    <select name="hospital_curso" id="campo_hospital" class="form-select"
+                                        onchange="changeValue(this.value)">
+                                        <option selected disabled>Ver selecciones</option>
+                                        {%for class_hosp in class_hospital %}
+                                        <option value="{{class_hosp.nombre_hospital}}">
+                                            {{class_hosp.nombre_hospital}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                        data-bs-target="#add_hospital"><img src="{% static 'img/mas.png' %}"
+                                            height="15px">
+                                    </button>
+
+                                </div>
+                                {% if form_addcurso.hospital_curso.errors %}
+                                <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                                    {{form_addcurso.hospital_curso.errors}}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="cursos-add-box">
+                                <label for="">Servicios dirigidos:</label>
+                                <div class="input-group">
+                                    <select name="servicio_curso" id="servicio_curso" class="form-select">
+                                        <option selected disabled>Ver selecciones</option>
+                                        {%for class_serv in class_serv %}
+                                        <option value="{{class_serv.nombre_sev}}">
+                                            {{class_serv.nombre_sev}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                        data-bs-target="#add_servicio"><img src="{% static 'img/mas.png' %}"
+                                            height="15px">
+                                    </button>
+
+                                </div>
+                                {% if form_addcurso.servicio_curso.errors %}
+                                <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                                    {{form_addcurso.servicio_curso.errors}}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="row cursos-add-box">
+                                <div class="col">
+                                    <label for="">Personal Dirigido:</label>
+                                </div>
+                                <div class="col">
+                                    <div>
+                                        <div class="form-check form-check-inline text-start">
+                                            <div>
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                                                    value="Administrativo" name="personal_cursos">
+                                                <label class="form-check-label" for="inlineCheckbox1">Personal
+                                                    administrativo</label>
+                                            </div>
+                                            <div>
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox2"
+                                                    value="Secretaria" name="personal_cursos">
+                                                <label class="form-check-label" for="inlineCheckbox1">Secretaria</label>
+                                            </div>
+                                            <div>
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox3"
+                                                    value="Médicos" name="personal_cursos">
+                                                <label class="form-check-label" for="inlineCheckbox1">Médicos</label>
+                                            </div>
+                                            <div>
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox4"
+                                                    value="Enfermero/a" name="personal_cursos">
+                                                <label class="form-check-label"
+                                                    for="inlineCheckbox1">Enfermero/a</label>
+                                            </div>
+                                            <div>
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox5"
+                                                    value="Auxiliares" name="personal_cursos">
+                                                <label class="form-check-label" for="inlineCheckbox1">Auxiliares</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if form_addcurso.personal_cursos.errors %}
+                                <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                                    {{form_addcurso.personal_cursos.errors}}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="container text-center mb-5"><br>
+                                <button class="btn btn-primary" type="submit" form="ingresar_curso" id="curso_ingresado"
+                                    name="curso_ingresado">Enviar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="Lista_cursos" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+            <div class="container text-center">
+                <h3 class="my-3 fw-bold">Lista de cursos ingresados</h3>
+                <div class="container text-center">
+                    <form action="" method="POST" id="buscar_curso_operador">
+                        {% csrf_token %}
+                        <div class="input-group text-center">
+                            <label class="input-group-text">Buscar Curso</label>
+                            <input type="text" name="busqueda_curso_operador" id="busqueda_curso_operador"
+                                class="form-control">
+                            <button class="btn btn-warning" type="submit" form="buscar_curso_operador"
+                                name="curso_buscador" id="curso_buscador"><img src="{% static 'img/busqueda2.png' %}"
+                                    height="15px"></button>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive my-5">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Hospital</th>
+                                <th scope="col">Servicio</th>
+                                <th scope="col">Personal</th>
+                                <th scope="col">Editar</th>
+                                <th scope="col">Eliminar</th>
+                                <th scope="col">Activo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for list_cursos in cursos %}
+                            <tr>
+                                <th scope="row">{{list_cursos.id}}</th>
+                                <td>{{list_cursos.nombre_curso | truncatechars:10}}</td>
+                                <td>{{list_cursos.hospital_curso | truncatechars:10}}</td>
+                                <td>{{list_cursos.servicio_curso | truncatechars:10}}</td>
+                                <td class="text-start">
+                                    <ul class="list-unstyled">
+                                        {% for x in list_cursos.personal_cursos.split %}
+                                        <li>{{x}}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </td>
+                                <td class="align-items-center">
+                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                        data-bs-target="#Modal_curos_{{list_cursos.id}}">
+                                        <img src="{% static 'img/editar.png' %}" width="20px">
+                                    </button>
+                                </td>
+                                <td class="align-items-center">
+                                    <form action="" method="POST" id="delete_curso{{list_cursos.id}}">
+                                        {% csrf_token %}
+                                        <input type="hidden" value="{{list_cursos.id}}" name="id_delete_curso">
+                                        <button type="submit" class="btn btn-danger"
+                                            form="delete_curso{{list_cursos.id}}" name="curso_delete"
+                                            id="curso_delete{{list_cursos.id}}">
+                                            <img src="{% static 'img/basura.png' %}" width="20px">
+                                        </button>
+                                    </form>
+                                </td>
+                                <td class="switch">
+                                    <form action="" method="POST" id="form_estado_curso_{{list_cursos.id}}">
+                                        {%csrf_token%}
+                                        <input type="hidden" value="{{list_cursos.id}}" name="id_curso_estado"
+                                            id="id_estado_{{list_cursos.id}}">
+                                        <input type="hidden" name="bool_estado_post"
+                                            id="id_bool_estado_post_{{list_cursos.id}}" value="">
+                                        <input type="hidden" name="bool_curso" id="id_bool_curso_{{list_cursos.id}}">
+                                        <input type="hidden" name="estado_actual" id="estado_actual_{{list_cursos.id}}"
+                                            value="{{list_cursos.activo}}">
+
+                                        <div class="form-check form-switch d-flex align-items-center">
+
+                                            <input class=" form-check-input bg-dark" type="checkbox" role="switch"
+                                                id="id_bool_estado_{{list_cursos.id}}">
+
+                                            <label class="form-check-label ms-2"
+                                                for="id_bool_estado_{{list_cursos.id}}">Mostrar
+                                                curso</label>
+                                        </div>
+                                    </form>
+                                    <script>
+                                        var estado = document.getElementById('estado_actual_{{list_cursos.id}}');
+                                        var checkbox = document.getElementById('id_bool_estado_{{list_cursos.id}}');
+                                        if (estado.value == 'True') {
+                                            checkbox.checked = true;
+                                        } else {
+                                            checkbox.checked = false;
+                                        }
+
+
+                                        document.getElementById('id_bool_estado_{{list_cursos.id}}').addEventListener('change', function () {
+                                            var isChecked = this.checked;
+                                            document.getElementById('id_bool_estado_post_{{list_cursos.id}}').value = isChecked ? 'True' : 'False';
+                                            setTimeout(function () {
+                                                document.getElementById('form_estado_curso_{{list_cursos.id}}').submit();
+                                            }, 500);
+
+                                        });
+                                    </script>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {% for list_cursos in cursos %}
+                <!-- Modal -->
+                <!-- Modal update curso-->
+
+
+                <div class="modal fade" id="Modal_curos_{{list_cursos.id}}" tabindex="-1"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Curso N°{{list_cursos.id}}</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="" method="POST" id="actualizar_curso{{list_cursos.id}}"
+                                    enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <input type="hidden" value="{{list_cursos.id}}" id="curso_actualizar"
+                                        name="curso_actualizar">
+                                    <div class="container text-center ">
+                                        <div class="row justify-content-center  align-items-center ">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-6">
+                                                <div class="container text-center">
+                                                    <div class="row">
+                                                        <div class="col-4 text-start">
+                                                            <h6>Titulo :</h6>
+                                                        </div>
+                                                        <div class="col-8 text-start">
+                                                            <input class="form-control" type="text"
+                                                                style="width: 350px;"
+                                                                id="nombre_curso_up_{{list_cursos.id}}"
+                                                                name="nombre_curso_up"
+                                                                value="{{list_cursos.nombre_curso}}">
+                                                            {% if form_curso_up.nombre_curso.errors %}
+                                                            <div class="alert alert-warning alert-bg " role="alert">
+                                                                {{form_curso_up.nombre_curso.errors}}
+                                                            </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-4 text-start">
+                                                            <h6>Descripcion precentación :</h6>
+                                                        </div>
+                                                        <div class="col-8 text-start"><textarea class="form-control"
+                                                                type="text" id="descrip_corta_curso"
+                                                                name="descrip_corta_curso"
+                                                                style="width: 350px; height: 150px;">{{list_cursos.descrip_corta_curso}}</textarea>
+                                                            {% if form_curso_up.descrip_corta_curso.errors %}
+                                                            <div class="alert alert-warning alert-bg " role="alert">
+                                                                {{form_curso_up.descrip_corta_curso.errors}}
+                                                            </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-4 text-start">
+                                                            <h6>Descripcion Completa :</h6>
+                                                        </div>
+                                                        <div class="col-8 text-start"><textarea class="form-control"
+                                                                type="text" id="descrip_larga_curso"
+                                                                name="descrip_larga_curso"
+                                                                style="width: 350px; height: 150px;">{{list_cursos.descrip_larga_curso}}</textarea>
+                                                            {% if form_curso_up.descrip_larga_curso.errors %}
+                                                            <div class="alert alert-warning alert-bg " role="alert">
+                                                                {{form_curso_up.descrip_larga_curso.errors}}
+                                                            </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="row ">
+                                                        <div class="col-4 text-start"><label
+                                                                class="form-label">Requisistos :</label></div>
+                                                        <div class="col-8 text-start"><input class="form-control"
+                                                                type="text" style="width: 350px;" id="requisitos_curso"
+                                                                name="requisitos_curso"
+                                                                value="{{list_cursos.requisitos_curso}}">
+                                                            {% if form_curso_up.requisitos_curso.errors %}
+                                                            <div class="alert alert-warning alert-bg " role="alert">
+                                                                {{form_curso_up.requisitos_curso.errors}}
+                                                            </div>
+                                                            {% endif %}
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="row ">
+                                                        <div class="col-4 text-start">
+                                                            <h6>Hospital :</h6>
+                                                        </div>
+                                                        <div class="col-8 text-start">
+                                                            <select name="hospital_curso" id="hospital_curso"
+                                                                class="form-select">
+                                                                <option value="{{list_cursos.hospital_curso}}" selected>
+                                                                    {{list_cursos.hospital_curso}} --
+                                                                    (Actual)</option>
+                                                                {%for class_hosp in class_hospital %}
+                                                                <option value="{{class_hosp.nombre_hospital}}">
+                                                                    {{class_hosp.nombre_hospital}}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                        {% if form_curso_up.hospital_curso.errors %}
+                                                        <div class="alert alert-warning alert-bg " role="alert">
+                                                            {{form_curso_up.hospital_curso.errors}}
+                                                        </div>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="row ">
+                                                        <div class="col-4 text-start">
+                                                            <h6>Servicio :</h6>
+                                                        </div>
+                                                        <div class="col-8 text-start">
+                                                            <select name="servicio_curso" id="servicio_curso"
+                                                                class="form-select">
+                                                                <option value="{{list_cursos.servicio_curso}}" selected>
+                                                                    {{list_cursos.servicio_curso}} --
+                                                                    (Actual)</option>
+                                                                {%for class_serv in class_serv %}
+                                                                <option value="{{class_serv.nombre_sev}}">
+                                                                    {{class_serv.nombre_sev}}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                        {% if form_curso_up.servicio_curso.errors %}
+                                                        <div class="alert alert-warning alert-bg " role="alert">
+                                                            {{form_curso_up.servicio_curso.errors}}
+                                                        </div>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-4 text-start">
+                                                            <h6>Inicia :</h6>
+                                                        </div>
+                                                        <div class="col-8 text-start"><input name="time_start_curso"
+                                                                id="time_start_curso" name="time_start_curso"
+                                                                class="form-control" type="date"
+                                                                aria-labelledby="helpertimestart"
+                                                                value="{{ list_cursos.time_start_curso|date:'Y-m-d' }}">
+                                                            {% if form_curso_up.time_start_curso.errors %}
+                                                            <div class="alert alert-warning alert-bg " role="alert">
+                                                                {{form_curso_up.time_start_curso.errors}}
+                                                            </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-4 text-start ">
+                                                            <h6>Finaliza :</h6>
+                                                        </div>
+                                                        <div class="col-8 text-start"><input class="form-control"
+                                                                type="date" aria-labelledby="helpertimeend"
+                                                                id="time_end_curso" name="time_end_curso"
+                                                                value="{{ list_cursos.time_end_curso|date:'Y-m-d' }}">
+                                                            {% if form_curso_up.time_end_curso.errors %}
+                                                            <div class="alert alert-warning alert-bg " role="alert">
+                                                                {{form_curso_up.time_end_curso.errors}}
+                                                            </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-4 text-start">
+                                                            <h6>Personal Dirigido :</h6>
+                                                        </div>
+                                                        <div class="col-8 text-start">
+                                                            <div>
+                                                                <div class="form-check form-check-inline text-start">
+                                                                    <div>
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            id="inlineCheckbox1" value="Administrativo"
+                                                                            name="personal_cursos">
+                                                                        <label class="form-check-label"
+                                                                            for="inlineCheckbox1">Personal
+                                                                            administrativo</label>
+                                                                    </div>
+                                                                    <div>
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            id="inlineCheckbox2" value="Secretaria"
+                                                                            name="personal_cursos">
+                                                                        <label class="form-check-label"
+                                                                            for="inlineCheckbox1">Secretaria</label>
+                                                                    </div>
+                                                                    <div>
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            id="inlineCheckbox3" value="Médicos"
+                                                                            name="personal_cursos">
+                                                                        <label class="form-check-label"
+                                                                            for="inlineCheckbox1">Médicos</label>
+                                                                    </div>
+                                                                    <div>
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            id="inlineCheckbox4" value="Enfermero/a"
+                                                                            name="personal_cursos">
+                                                                        <label class="form-check-label"
+                                                                            for="inlineCheckbox1">Enfermero/a</label>
+                                                                    </div>
+                                                                    <div>
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            id="inlineCheckbox5" value="Auxiliares"
+                                                                            name="personal_cursos">
+                                                                        <label class="form-check-label"
+                                                                            for="inlineCheckbox1">Auxiliares</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            {% if form_curso_up.personal_cursos.errors %}
+                                                            <div class="alert alert-warning alert-bg " role="alert">
+                                                                {{form_curso_up.personal_cursos.errors}}
+                                                            </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-5 ">
+                                                <h4></h4>
+                                                <h6>Imagen</h6>
+                                                <input class="form-control form-control-sm" id="img_curso_up"
+                                                    type="file" name="img_curso_up">
+                                                {% if form_curso_up.img_curso_up.errors %}
+                                                <div class="alert alert-warning alert-bg " role="alert">
+                                                    {{form_curso_up.img_curso_up.errors}}
+                                                </div>
+                                                {% endif %}
+                                                <img src="{{list_cursos.img_curso.url}}" width="350px"><br>
+                                                <h6>Documento</h6>
+                                                <input class="form-control form-control-sm" id="doc_curso_up"
+                                                    type="file" name="doc_curso_up">
+                                                {% if form_curso_up.doc_curso_up.errors%}
+                                                <div class="alert alert-warning alert-bg " role="alert">
+                                                    {{form_curso_up.doc_curso_up.errors}}
+                                                </div>
+                                                {% endif %}
+                                                <a href="{{list_cursos.form_carga_curso}}"></a>
+                                                <label for="">{{list_cursos.form_carga_curso}}</label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" form="actualizar_curso{{list_cursos.id}}" class="btn btn-primary"
+                                    id="curso_update{{list_cursos.id}}" name="curso_update">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <!-- Modal falla de busqueda -->
+    <div class="modal fade" id="fail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Aviso Falla!!</h1>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger" role="alert">
+                        <div class="row">
+                            <div class="col-2">
+                                <img src="{% static 'img/multiplicar.png' %}" width="65px">
+                            </div>
+                            <div class="col" style="margin-top: 15px;">
+                                <h6>No se encontro algun curso con el dato especificado!!!</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal delete -->
+    <div class="modal fade" id="del_curso" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Curso Eliminado!!</h1>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger d-flex align-items-center" role="alert" style="height: 80px;">
+                        <img class="img-aviso-estado" src="{% static 'img/formulario_delete.png' %}" width="65px">
+                        <div class="text-center">
+                            <h6>El cursos fue eliminado !!!</h6>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal mod -->
+    <div class="modal fade" id="curso_mod" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Curso modificado!!</h1>
+                </div>
+                <div class="modal-body">
+
+                    <div class="alert alert-success d-flex align-items-center" role="alert" style="height: 80px;">
+                        <img class="img-aviso-estado" src="{% static 'img/form_mod.png' %}" width="65px">
+                        <div class="text-center">
+                            <h6>El cursos fue modificado !!!</h6>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal add hospital -->
+    <div class="modal fade" id="add_hospital" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Hospitales</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <button class="nav-link active" id="add-home-tab2" data-bs-toggle="tab" data-bs-target="#Agregar"
+                                type="button" role="tab" aria-controls="home-tab-pane"
+                                aria-selected="true">Agregar</button>
+                            <button class="nav-link" id="nav-delete-tab2" data-bs-toggle="tab"
+                                data-bs-target="#Eliminar" type="button" role="tab" aria-controls="nav-profile"
+                                aria-selected="false">Eliminar</button>
+                        </div>
+                    </nav>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="Agregar" role="tabpanel" aria-labelledby="home-tab"
+                            tabindex="0">
+                            <div class="container">
+                                <form action="" method="POST" id="ingresar_hospital">
+                                    {%csrf_token %}
+                                    <label for="" class="form-label">Ingrese el nombre del Hospital :</label>
+                                    <input type="text" class="form-control" name="nombre_hospital" id="nombre_hospital">
+                                    
+                                </form>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="Eliminar" role="tabpanel" aria-labelledby="nav-profile-tab"
+                            tabindex="0">
+                            <div class="container">
+                                <form action="" method="POST" id="delete_hospital">
+                                    {%csrf_token %}
+                                    <label for="" class="form-label">Selecion el Hospital para eliminar</label>
+                                    <select name="id_delete_hospital" id="id_delete_hospital" class="form-select">
+                                        <option selected disabled>Ver selecciones</option>
+                                        {%for class_hosp in class_hospital %}
+                                        <option value="{{class_hosp.id}}">
+                                            {{class_hosp.nombre_hospital}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-warning" form="ingresar_hospital" name="hosp_add" id="hosp_add">Enviar</button>
+                    <button type="submit" class="btn btn-danger" form="delete_hospital" name="hosp_delete" id="hosp_delete">Eliminar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal add servicio -->
+    <div class="modal fade" id="add_servicio" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Servicios</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <button class="nav-link active" id="add-home-tab" data-bs-toggle="tab"
+                                data-bs-target="#Agregar2" type="button" role="tab" aria-controls="home-tab-pane"
+                                aria-selected="true">Agregar</button>
+                            <button class="nav-link" id="nav-delete-tab" data-bs-toggle="tab"
+                                data-bs-target="#Eliminar2" type="button" role="tab" aria-controls="nav-profile"
+                                aria-selected="false">Eliminar</button>
+                        </div>
+                    </nav>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="Agregar2" role="tabpanel" aria-labelledby="home-tab"
+                            tabindex="0">
+                            <div class="container">
+                                <form action="" method="POST" id="add_serv">
+                                    {%csrf_token %}
+                                    <label for="" class="form-label">Ingrese el nombre del Servicio :</label>
+                                    <input type="text" class="form-control" name="nombre_sev" id="nombre_sev">
+                                   
+                                </form>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="Eliminar2" role="tabpanel" aria-labelledby="nav-profile-tab"
+                            tabindex="0">
+                            <div class="container">
+                                <form action="" method="POST" id="delete_serv">
+                                    {%csrf_token %}
+                                    <label for="" class="form-label">Selecion el Servicio para eliminar</label>
+                                    <select name="servicio_curso" id="servicio_curso" class="form-select">
+                                        <option selected disabled>Ver selecciones</option>
+                                        {%for class_serv in class_serv %}
+                                        <option value="{{class_serv.id}}">
+                                            {{class_serv.nombre_sev}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-warning" form="add_serv" name="serv_add"
+                    id="serv_add">Enviar</button>
+                    <button class="btn btn-danger" type="submit" form="delete_serv" name="serv_delete"
+                                        id="serv_delete">Eliminar</button>
+
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal  curso add-->
+    <div class="modal fade" id="curso_add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Aviso</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-success d-flex align-items-center" role="alert">
+                        <img src="{% static 'img/aprobado.png' %}" width="65px">
+                        <div>
+                            <h6>Curso agregado Correctamente!!</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal  curso Activado/Desactivado -->
+    <div class="modal fade" id="resultado" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Aviso</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container text-center">
+                        {% if resultado.estado %}
+                        <div class="alert alert-success d-flex align-items-center" role="alert" style="height: 80px;">
+                            <img class="img-aviso-estado" src="{% static 'img/play.png' %}" width="65px">
+                            <div class="text-center">
+                                <h6>{{resultado.text}}</h6>
+                            </div>
+                        </div>
+
+                        {% else %}
+                        <div class="alert alert-danger d-flex align-items-center" role="alert" style="height: 80px;">
+                            <img class="img-aviso-estado" src="{% static 'img/stop.png' %}" width="65px">
+                            <div class="text-center">
+                                <h6>{{resultado.text}}</h6>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="text-center bg-primary text-white">
+        <section class="d-flex justify-content-center pb-3 border-bottom">
+            <section class="mt-3">
+                <!-- Facebook -->
+                <a class="btn btn-outline-light btn-floating m-1" href="https://www.facebook.com/hggbconcepcion/"
+                    role="button"><i class="fab fa-facebook-f"></i></a>
+                <!-- Twitter -->
+                <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/hggbconcepcion"
+                    role="button"><i class="fab fa-twitter"></i></a>
+                <!-- Instagram -->
+                <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/hggbconcepcion/"
+                    role="button"><i class="fab fa-instagram"></i></a>
+            </section>
+        </section>
+        <section class="">
+            <div class="container text-center text-md-start mt-5">
+                <div class="row mt-3">
+                    <div class="col-md-5 col-lg-6 col-xl-6 mx-auto mb-4">
+                        <h6 class="text-uppercase fw-bold mb-4">
+                            <img src="{% static 'img/logo_salud.png' %}" alt="Logo" style="width:100px;"
+                                class="rounded-pill">
+                        </h6>
+                    </div>
+                    <div class="col-md-5 col-lg-6 col-xl-6 mx-auto mb-4">
+                        <p class="lh-sm text-justify">
+                            Nuestro compromiso es brindar capacitación en salud de calidad, manteniendo a nuestro
+                            personal
+                            actualizado
+                            y preparado para ofrecer la mejor atención posible. Nos esforzamos por promover un
+                            ambiente
+                            de
+                            aprendizaje
+                            continuo y colaboración con expertos en el campo. Juntos, trabajamos para impulsar el
+                            avance
+                            de la salud
+                            y
+                            mejorar la calidad de vida de nuestra comunidad.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.025);">
+            © 2023 Copyright:
+            <a class="text-reset fw-bold" href=" ">Servicio de Capacitacion a la Salud</a>
+        </div>
+    </footer>
+
+
+
+
+    <!-- scripts -->
+
+    <script>
+        let start = document.getElementsByName('time_start_curso')[0];
+        let end = document.getElementsByName('time_end_curso')[0];
+        start.min = (new Date()).toISOString().substr(0, 19);
+        end.min = (new Date()).toISOString().substr(0, 19);
+    </script>
+    <!-- scripts Curso Activado/Desactivado -->
+    {% if resultado %}
+    <script>
+        $(document).ready(function () {
+            const myModal = new bootstrap.Modal('#resultado');
+            myModal.show();
+        });
+    </script>
+    {%endif%}
+
+    <!-- scripts curso agregado correctamente -->
+    {% if curso_add %}
+    <script>
+        $(document).ready(function () {
+            const myModal = new bootstrap.Modal('#curso_add');
+            myModal.show();
+        });
+    </script>
+    {%endif%}
+
+
+    <!-- scripts para que se carge en la pesataña de lista -->
+    {% if lista %}
+    <script>
+        $(document).ready(function () {
+            const bsTab = new bootstrap.Tab('#nav-profile-tab1');
+            bsTab.show();
+        });
+    </script>
+    {% endif %}
+    <!-- scripts Modal llamado  eliminado-->
+    {% if del_curso %}
+    <script>
+        $(document).ready(function () {
+            const myModal = new bootstrap.Modal('#del_curso');
+            myModal.show();
+        });
+    </script>
+    {%endif%}
+    {% if curso_mod %}
+    <script>
+        $(document).ready(function () {
+            const myModal = new bootstrap.Modal('#curso_mod');
+            myModal.show();
+        });
+    </script>
+    {%endif%}
+    <script>
+        function changeValue(newColor) {
+            var valor = document.getElementById('campo_precentacion').value;
+            document.getElementById('para_precentacion').innerHTML = valor;
+            var valor = document.getElementById('campo_hospital').value;
+            document.getElementById('para_hospital').innerHTML = valor;
+            var valor = document.getElementById('campo_nombre').value;
+            document.getElementById('para_nombre').innerHTML = valor;
+        }
+        function prueba(el) {
+            document.getElementById('para_end_time').innerHTML = el.value;
+        }
+        const defaultFile = "{% static 'img/no_img.jpg' %}"
+
+        const file = document.getElementById('img_curso');
+        const img = document.getElementById('mostrarImagen');
+        file.addEventListener('change', e => {
+            if (e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    img.src = e.target.result;
+                }; reader.readAsDataURL(e.target.files[0])
+            } else { img.src = defaultFile }
+        })
+    </script>
+    <!-- Modal llamado -->
+    {% if fail %}
+    <script>
+        $(document).ready(function () {
+            const myModal = new bootstrap.Modal('#fail');
+            myModal.show();
+        });
+    </script>
+    {%endif%}
+
+    {% if form_curso_up %}
+    <script>
+        $(document).ready(function () {
+            const myModal = new bootstrap.Modal('#Modal_curos_{{form_curso_up.curso_actualizar.value}}');
+            myModal.show();
+        });
+    </script>
+    {%endif%}
+    
+
+    <script>
+        $(function () {
+          $('#hosp_delete').hide();
+          $('#add-home-tab2').click(function () {
+            $('#hosp_add').show();
+            $('#hosp_delete').hide();
+    
+          });
+          $('#nav-delete-tab2').click(function () {
+            $('#hosp_add').hide();
+            $('#hosp_delete').show();
+    
+          });
+        })
+      </script>
+      
+      <script>
+        $(function () {
+          $('#serv_delete').hide();
+          $('#add-home-tab').click(function () {
+            $('#serv_add').show();
+            $('#serv_delete').hide();
+    
+          });
+          $('#nav-delete-tab').click(function () {
+            $('#serv_add').hide();
+            $('#serv_delete').show();
+    
+          });
+        })
+      </script>
+
+
+
+
+
+
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.js"></script>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"
+        integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"
+        integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ"
+        crossorigin="anonymous"></script>
+    <!-- AJAX -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
+{% endblock content %}
