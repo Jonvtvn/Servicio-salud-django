@@ -76,14 +76,16 @@
               {% if publicidad2.is_curso %}
                 <form action="/lista_cursos_fun/" method="POST" id="form_is_curso_{{publicidad2.id}}">
                   {%csrf_token %}
-                  <img src="{{publicidad2.img_pub.url}}" class="d-block w-100" width="800px" height="400px" onclick="prueba();">
-                  <input type="hidden" name="curso_activo" id="curso_activo_{{publicidad2.id}}" value="{{publicidad2.id.value}}">
+                  <img src="{{publicidad2.img_pub.url}}" class="d-block w-100" width="800px" height="400px" onclick="prueba('{{publicidad2.id}}');">
+                  <input type="hidden" name="curso_activo" id="curso_activo_{{publicidad2.id}}" value="{{publicidad2.id}}">
                   <input type="hidden" name="btn_pub_curso" id="btn_pub_curso" value="true">
                 </form>
                 <script>
-                  function prueba() {
+                  function prueba(formId) {
                      // Obtener el formulario por su ID
-                  var form = document.getElementById("form_is_curso_{{publicidad2.id}}");
+                  var form = document.getElementById("form_is_curso_" + formId);
+                  var curso_activo = document.getElementsByName("curso_activo")
+                  var btn_pub_curso = document.getElementsByName("btn_pub_curso")
                   // Enviar el formulario
                   form.submit();}
                 </script>
@@ -149,7 +151,7 @@
     <div class="container container-card-box">
       <div class="row justify-content-center">
         {% for perfil_card in perfil_card %}
-        <div class="col-lg-4 col-md-6 col-sm-12 col-lg-2 col-lg">
+        <div class="col-lg-4 col-md-6 col-sm-12 col-lg-2 col-sm">
           <div class="card m-3">
             <img class="card-img-top" src="{{perfil_card.img_card.url}}" alt="Imagen 1">
             <div class="card-body card-body-enc text-center">

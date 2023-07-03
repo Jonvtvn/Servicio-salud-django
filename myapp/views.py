@@ -108,28 +108,33 @@ def form_consulta(request):
 
 
 def lista_cursos_funcionarios(request):
-    cursos = create_nuevo_curso.objects.filter(activo=True).order_by('id')
+    cursos2 = create_nuevo_curso.objects.filter(activo=True).order_by('id')
     class_hospital = new_class_hospital.objects.all().order_by('id')
     class_serv = new_class_servicio.objects.all().order_by('id')
     #acuerdate de cambiar los cursos aca que esten la fecha caducada
+    hoy =  datetime.datetime.now()
+    for curso in  cursos2:
+        if curso.time_end_curso <= hoy.date():
+            curso.activo = False
+            curso.save()
+    cursos = create_nuevo_curso.objects.filter(activo=True).order_by('id')
     
     if request.method == 'POST':
         if "btn_pub_curso"  in request.POST:
             form = form_is_curso(request.POST)
             if form.is_valid():
-                curso_buscar = request.POST.get('curso_activo')
-                buscador_curso = create_nuevo_curso.objects.get(id= curso_buscar)
-                
-                if not buscador_curso:
+                curso_activo = request.POST.get('curso_activo')
+                buscador_curso = create_nuevo_curso.objects.filter(id= curso_activo)
+                if buscador_curso.exists() == False:
                     fallaindexcurso = "El curso no existe"
                     return render(request, 'index/lista_cursos_fun.html', {"cursos": cursos, "class_hospital": class_hospital, "class_serv": class_serv, "fallaindexcurso": fallaindexcurso})
                 
-                if buscador_curso.activo:
-                    return render(request, 'index/lista_cursos_fun.html', {"cursos": buscador_curso, "class_hospital": class_hospital, "class_serv": class_serv})
-                
-                else:
-                    fallaindexcurso = "El curso cumplio su fecha de termino"
-                    return render(request, 'index/lista_cursos_fun.html', {"cursos": cursos, "class_hospital": class_hospital, "class_serv": class_serv, "fallaindexcurso": fallaindexcurso})
+                for curso_id in buscador_curso:
+                    if curso_id.activo:
+                        return render(request, 'index/lista_cursos_fun.html', {"cursos": buscador_curso, "class_hospital": class_hospital, "class_serv": class_serv})
+                    else:
+                        fallaindexcurso = "El curso cumplio su fecha de termino"
+                        return render(request, 'index/lista_cursos_fun.html', {"cursos": cursos, "class_hospital": class_hospital, "class_serv": class_serv, "fallaindexcurso": fallaindexcurso})
             else:
                 fallaindexcurso = "Error al buscar el curso"
                 return render(request, 'index/lista_cursos_fun.html', {"cursos": cursos, "class_hospital": class_hospital, "class_serv": class_serv, "fallaindexcurso": fallaindexcurso})
@@ -206,12 +211,6 @@ def lista_cursos_funcionarios(request):
             
         return render(request, 'index/lista_cursos_fun.html', {"cursos": cursos, "class_hospital": class_hospital, "class_serv": class_serv})
     else:
-        hoy =  datetime.datetime.today()
-        for curso in  cursos:
-            if curso.time_end_curso == hoy:
-                curso.activo = False
-                curso.save()
-
         return render(request, 'index/lista_cursos_fun.html', {"cursos": cursos, "class_hospital": class_hospital, "class_serv": class_serv})
 
 
@@ -264,13 +263,16 @@ def ingresar_cursos(request):
                 id_curso = request.POST['id_curso_estado']
                 curso_estado = create_nuevo_curso.objects.get(id=id_curso)
                 bool_estado = request.POST['bool_estado_post']
-                curso_estado.activo = bool_estado
-                curso_estado.save()
-                
-                if bool_estado == "True":
-                    resultado = {"estado" : True, "text" : "El curso se encuentra visible"}
-                else:
-                    resultado = {"estado" : False, "text" : "El curso se encuentra oculto"}
+                hoy =  datetime.datetime.now()
+                if curso_estado.time_end_curso <= hoy.date():
+                    resultado = {"estado" : False, "text" : "El curso tiene sus fechas caducadas"}
+                else:    
+                    curso_estado.activo = bool_estado
+                    curso_estado.save()
+                    if bool_estado == "True":
+                        resultado = {"estado" : True, "text" : "El curso se encuentra visible"}
+                    else:
+                        resultado = {"estado" : False, "text" : "El curso se encuentra oculto"}
                 
 
                 return render(request, "operador/cursos_add.html", {"cursos": cursos, "lista":True,  "resultado" : resultado , "class_hospital": class_hospital, "class_serv": class_serv})
