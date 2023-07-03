@@ -75,6 +75,7 @@
             <div class="carousel-item" data-bs-interval="5000">
               {% if publicidad2.is_curso %}
                 <form action="/lista_cursos_fun/" method="POST" id="form_is_curso_{{publicidad2.id}}">
+                  {%csrf_token %}
                   <img src="{{publicidad2.img_pub.url}}" class="d-block w-100" width="800px" height="400px" onclick="prueba();">
                   <input type="hidden" name="curso_activo" id="curso_activo_{{publicidad2.id}}" value="{{publicidad2.id.value}}">
                   <input type="hidden" name="btn_pub_curso" id="btn_pub_curso" value="true">
@@ -83,8 +84,6 @@
                   function prueba() {
                      // Obtener el formulario por su ID
                   var form = document.getElementById("form_is_curso_{{publicidad2.id}}");
-                  var id_curso = document.getElementById("curso_activo_{{publicidad2.id}}")
-                  var btn_pub_curso = document.getElementById("btn_pub_curso")
                   // Enviar el formulario
                   form.submit();}
                 </script>

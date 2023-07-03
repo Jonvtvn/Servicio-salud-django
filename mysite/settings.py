@@ -89,6 +89,7 @@ DATABASES = {
 		'PORT' : '' #si lo dejas vacío tomara el puerto por default
 	}
 }
+ALLOWED_HOSTS = ['45.236.128.50', 'localhost']
 
 
 

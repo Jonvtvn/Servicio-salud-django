@@ -123,8 +123,10 @@ def lista_cursos_funcionarios(request):
                 if not buscador_curso:
                     fallaindexcurso = "El curso no existe"
                     return render(request, 'index/lista_cursos_fun.html', {"cursos": cursos, "class_hospital": class_hospital, "class_serv": class_serv, "fallaindexcurso": fallaindexcurso})
+                
                 if buscador_curso.activo:
                     return render(request, 'index/lista_cursos_fun.html', {"cursos": buscador_curso, "class_hospital": class_hospital, "class_serv": class_serv})
+                
                 else:
                     fallaindexcurso = "El curso cumplio su fecha de termino"
                     return render(request, 'index/lista_cursos_fun.html', {"cursos": cursos, "class_hospital": class_hospital, "class_serv": class_serv, "fallaindexcurso": fallaindexcurso})
@@ -204,9 +206,9 @@ def lista_cursos_funcionarios(request):
             
         return render(request, 'index/lista_cursos_fun.html', {"cursos": cursos, "class_hospital": class_hospital, "class_serv": class_serv})
     else:
-        hoy =  datetime.datetime.now()
+        hoy =  datetime.datetime.today()
         for curso in  cursos:
-            if curso.time_end_curso.date() == hoy.date():
+            if curso.time_end_curso == hoy:
                 curso.activo = False
                 curso.save()
 

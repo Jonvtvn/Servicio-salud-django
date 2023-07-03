@@ -15,6 +15,7 @@ from .models import (create_nuevo_curso,
 class form_is_curso(forms.Form):
     curso_activo = forms.CharField(max_length=10)
     btn_pub_curso = forms.CharField(max_length=6, required=False)
+    
 class estado_curso(forms.Form):
     id_curso_estado = forms.CharField(max_length=10)
     bool_estado_post = forms.CharField(max_length=6)
