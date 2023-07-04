@@ -79,20 +79,19 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+ALLOWED_HOSTS = ['45.236.128.50',"127.0.0.1", 'localhost']
+
+
 DATABASES = {
 	'default': {
 		'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME' : 'db_curso_5',
+        'NAME' : 'db_curso_6',
         'USER': 'tesis5',
         'PASSWORD' : 'root',
 		'HOST' : 'localhost',#si tienes otra dirección host debes remplazar esta
 		'PORT' : '' #si lo dejas vacío tomara el puerto por default
 	}
 }
-
-ALLOWED_HOSTS = ['45.236.128.50',"127.0.0.1", 'localhost']
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

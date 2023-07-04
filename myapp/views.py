@@ -618,6 +618,7 @@ def modificar_index(request):
                 model_pub.descrip_pub = "Finaliza el " + \
                     cursos_2.time_end_curso.strftime("%d-%B-%Y")
                 model_pub.is_curso = True
+                model_pub.is_curso_id = cursos_2.id
                 model_pub.save()
                 text_acept = "La publicación del curso fue agregada correctamente"
                 return render(request, 'operador/mod_index.html', {"perfil_card": perfil_card, "publicidad": publicidad, "cursos": cursos, "agregado_acept": text_acept ,"lista":True }) 
