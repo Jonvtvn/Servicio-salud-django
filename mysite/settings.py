@@ -72,10 +72,6 @@ TEMPLATES = [
     },
 ]
 
-
-
-
-
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
 # Database
@@ -84,10 +80,14 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 ALLOWED_HOSTS = ['45.236.128.50',"127.0.0.1", 'localhost']
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+	'default': {
+		'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME' : 'db_curso_5',
+        'USER': 'tesis5',
+        'PASSWORD' : 'root',
+		'HOST' : 'localhost',#si tienes otra dirección host debes remplazar esta
+		'PORT' : '' #si lo dejas vacío tomara el puerto por default
+	}
 }
 
 # Password validation
