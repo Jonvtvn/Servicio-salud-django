@@ -1,13 +1,10 @@
 import os
 import shutil
 import datetime
-from django.http import FileResponse, HttpResponseRedirect
-from django.urls import reverse_lazy
+from django.http import FileResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.views.generic import DeleteView, UpdateView 
 from django.contrib.auth.views import  LoginView
 from django.contrib.sessions.models import Session
-from urllib.parse import urlencode
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
@@ -52,6 +49,7 @@ from .models import (create_nuevo_curso,
                      new_class_servicio,
                      new_class_hospital,
                      Usuario)
+
 
 def cerrar_todas_sesiones(request):
     try:
@@ -148,8 +146,8 @@ def lista_cursos_funcionarios(request):
                     )
                 #En caso de no encontrar nada entregamos mensaje de falla
                 if buscador.exists() == False:
-                    return render(request, 'index/lista_cursos_fun.html', {"cursos": buscador, "class_hospital": class_hospital, "class_serv": class_serv, "fallafiltro": True})
-                return render(request,'index/lista_cursos_fun.html',{"cursos": buscador, "class_hospital": class_hospital, "class_serv": class_serv})
+                    return render(request, 'index/lista_cursos_fun.html', {"cursos": buscador, "class_hospital": class_hospital, "class_serv": class_serv, "fallafiltro": True ,"in_busca_nombre" : form})
+                return render(request,'index/lista_cursos_fun.html',{"cursos": buscador, "class_hospital": class_hospital, "class_serv": class_serv,"in_busca_nombre" : form})
             
         #Filtro busqueda fecha
         form2 = form_filtro_cursos_time(request.POST)
@@ -375,9 +373,9 @@ def ingresar_cursos(request):
                         Q(hospital_curso__icontains=busqueda_curso)).distinct()
                     if cursos.exists() == False:
                         cursos = create_nuevo_curso.objects.all()
-                        return render(request, "operador/cursos_add.html", {"cursos": cursos, "class_hospital": class_hospital, "class_serv": class_serv,"lista":True,"fail":True})
-                    return render(request, "operador/cursos_add.html", {"cursos": cursos, "class_hospital": class_hospital, "class_serv": class_serv,"lista":True})
-                return render(request, "operador/cursos_add.html", {"cursos": cursos, "class_hospital": class_hospital, "class_serv": class_serv,"lista":True})
+                        return render(request, "operador/cursos_add.html", {"cursos": cursos, "class_hospital": class_hospital, "class_serv": class_serv,"lista":True,"fail":True , "in_busca_cur":form4})
+                    return render(request, "operador/cursos_add.html", {"cursos": cursos, "class_hospital": class_hospital, "class_serv": class_serv,"lista":True, "in_busca_cur":form4})
+                return render(request, "operador/cursos_add.html", {"cursos": cursos, "class_hospital": class_hospital, "class_serv": class_serv,"lista":True, "in_busca_cur":form4})
         
         
         #Servicio agregar / eliminar
@@ -467,8 +465,8 @@ def lista_consultas_operador(request):
                     ).distinct()
                     if consultas.exists() == False:
                         consultas2 = create_new_consultas.objects.all()
-                        return render(request, 'operador/Lista_consultas_cursos.html', {"consultas": consultas2, "consulta_respuesta2": consulta_respuesta2, "fallafiltroconsultas": True})
-                return render(request, 'operador/Lista_consultas_cursos.html', {"consultas": consultas, "consulta_respuesta2": consulta_respuesta2})
+                        return render(request, 'operador/Lista_consultas_cursos.html', {"consultas": consultas2, "consulta_respuesta2": consulta_respuesta2, "fallafiltroconsultas": True,"in_busca_C":form })
+                return render(request, 'operador/Lista_consultas_cursos.html', {"consultas": consultas, "consulta_respuesta2": consulta_respuesta2 ,"in_busca_C":form })
             
         #eliminar consulta
         if 'delete_consulta' in request.POST:
@@ -521,8 +519,8 @@ def lista_consultas_operador(request):
                     print(consulta_respuesta2.exists())
                     if consulta_respuesta2.exists() == False:
                         consulta_respuesta = create_new_consultas_respondidas.objects.all()
-                        return render(request, 'operador/Lista_consultas_cursos.html', {"consultas": consultas, "consulta_respuesta2": consulta_respuesta, "lista": True, "fallafiltroconsultas": True})
-                return render(request, 'operador/Lista_consultas_cursos.html', {"consultas": consultas, "consulta_respuesta2": consulta_respuesta2, "lista": True})
+                        return render(request, 'operador/Lista_consultas_cursos.html', {"consultas": consultas, "consulta_respuesta2": consulta_respuesta, "lista": True, "fallafiltroconsultas": True ,"in_busca_RC":form })
+                return render(request, 'operador/Lista_consultas_cursos.html', {"consultas": consultas, "consulta_respuesta2": consulta_respuesta2, "lista": True ,"in_busca_RC":form })
 
         #eliminar_respondidas
         if 'delete_respondidas' in request.POST:
@@ -613,6 +611,7 @@ def modificar_index(request):
                     shutil.copy(origen, destino)
                 else:
                     shutil.copy(origen, destino)
+
                 model_pub.img_pub.name = "img/public/"+name
                 model_pub.nombre_pub = cursos_2.nombre_curso
                 model_pub.descrip_pub = "Finaliza el " + \
@@ -743,6 +742,7 @@ def registrar(request):
             
         if 'user_update' in request.POST:
             form = Update_user(request.POST)
+            import re
             if form.is_valid():
                 id_update_user = request.POST['id_update_user']
                 userss = Usuario.objects.get(id=id_update_user)
@@ -757,7 +757,21 @@ def registrar(request):
                 if 'email' in request.POST:
                     userss.email = form.cleaned_data['email']
                 if 'password' in request.POST:
-                    userss.set_password(form.cleaned_data['password'])
+                    pw = form.cleaned_data['password']
+                    # Verificar si la contraseña es completamente numérica
+                    if str(pw).isnumeric():
+                        form.add_error("password","La contraseña no puede ser completamente numérica.")
+                        return render(request, "operador/personal.html" ,{"form_update": form ,"lista":True,"usuarios":usuarios})
+                    # Verificar si la contraseña cumple con los requisitos
+                    elif not re.search("[a-zA-Z]", pw) or not re.search("[0-9]", pw):
+                        form.add_error("password","La contraseña debe contener al menos una letra y un número.") 
+                        return render(request, "operador/personal.html" ,{"form_update": form ,"lista":True,"usuarios":usuarios})
+                    # Verificar si la contraseña es lo suficientemente larga
+                    elif len(pw) < 8:
+                        form.add_error("password","La contraseña debe contener al menos 8 caracteres.") 
+                        return render(request, "operador/personal.html" ,{"form_update": form ,"lista":True,"usuarios":usuarios})
+                    else:
+                        userss.set_password(pw)
                 userss.save()
                 modificacion = "Usuario Modificado "
                 return render(request, "operador/personal.html" ,{"modificacion":modificacion,"lista":True,"usuarios":usuarios})

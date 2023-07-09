@@ -82,7 +82,7 @@
             {% csrf_token %}
             <div class="input-group text-center">
               <label class="input-group-text">Busqueda de consulta</label>
-              <input type="text" name="busqueda_consulta" id="busqueda_consulta" class="form-control">
+              <input type="text" name="busqueda_consulta" id="busqueda_consulta" class="form-control" value="{{in_busca_C.busqueda_consulta.value}}">
               <button class="btn btn-warning" type="submit" id="filtro_consulta" form="buscar_consulta" name="filtro_consulta"><img
                   src="{% static 'img/busqueda2.png' %}" height="15px"></button>
             </div>
@@ -139,8 +139,7 @@
             {% csrf_token %}
             <div class="input-group text-center">
               <label class="input-group-text">Busqueda de consulta</label>
-              <input type="text" name="busqueda_consulta_respondidas" id="busqueda_consulta_respondidas"
-                class="form-control">
+              <input type="text" name="busqueda_consulta_respondidas" id="busqueda_consulta_respondidas" class="form-control" value="{{in_busca_RC.busqueda_consulta_respondidas.value}}">
               <button class="btn btn-warning" type="submit" id="filtro_consulta" form="buscar_consulta_respondido" name="busqueda_respondidas" id="busqueda_respondidas"><img
                   src="{% static 'img/busqueda2.png' %}" height="15px"></button>
             </div>

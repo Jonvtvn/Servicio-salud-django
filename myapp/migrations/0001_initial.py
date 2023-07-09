@@ -95,11 +95,38 @@ class Migration(migrations.Migration):
                 ('nombre_hospital', models.CharField(max_length=70)),
             ],
         ),
+        migrations.RunPython(
+            lambda apps, schema_editor: apps.get_model('myapp', 'new_class_hospital').objects.bulk_create([
+                apps.get_model('myapp', 'new_class_hospital')(nombre_hospital='Hospital las Higueras'),
+                apps.get_model('myapp', 'new_class_hospital')(nombre_hospital='Hospital Clínico Regional Dr. Guillermo Grant Benavente'),
+                apps.get_model('myapp', 'new_class_hospital')(nombre_hospital='Hospital San Agustin de Florida'),
+                apps.get_model('myapp', 'new_class_hospital')(nombre_hospital='Hospital Santa Juana'),
+                # Agrega más hospitales si es necesario
+            ]),
+        ),
         migrations.CreateModel(
             name='new_class_servicio',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
                 ('nombre_sev', models.CharField(max_length=50)),
             ],
+        ),
+        migrations.RunPython(
+            lambda apps, schema_editor: apps.get_model('myapp', 'new_class_servicio').objects.bulk_create([
+                apps.get_model('myapp', 'new_class_servicio')(nombre_sev='Servicio de emergencias'),
+                apps.get_model('myapp', 'new_class_servicio')(nombre_sev='Medicina interna'),
+                apps.get_model('myapp', 'new_class_servicio')(nombre_sev='Pediatría'),
+                apps.get_model('myapp', 'new_class_servicio')(nombre_sev='Cirugía'),
+                apps.get_model('myapp', 'new_class_servicio')(nombre_sev='Ginecología y obstetricia'),
+                apps.get_model('myapp', 'new_class_servicio')(nombre_sev='Cardiología'),
+                apps.get_model('myapp', 'new_class_servicio')(nombre_sev='Neurología'),
+                apps.get_model('myapp', 'new_class_servicio')(nombre_sev='Oncología'),
+                apps.get_model('myapp', 'new_class_servicio')(nombre_sev='Ortopedia'),
+                apps.get_model('myapp', 'new_class_servicio')(nombre_sev='Psiquiatría'),
+                apps.get_model('myapp', 'new_class_servicio')(nombre_sev='Urología '),
+                apps.get_model('myapp', 'new_class_servicio')(nombre_sev='Maternidad '),
+
+                # Agrega más hospitales si es necesario
+            ]),
         ),
     ]

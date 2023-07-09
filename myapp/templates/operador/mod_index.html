@@ -78,10 +78,10 @@
     <div class="tab-content my-5" id="myTabContent">
       <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
         <div class="container">
-          <div class="row">
-            <div  class="col-10 col-xl-4 col-md-5 col-sm-10 my-3">
+          <div class="row justify-content-center">
+            <div class="col-10 col-xl-4 col-md-5 col-sm-10 my-3">
               <div class="container list_cartas">
-                <h4 class="my-3 fw-bold">Ingresar cartas de precentación</h4>
+                <h4 class="my-3 fw-bold">Ingresar cartas de presentación</h4>
                 <form action="" method="POST" enctype="multipart/form-data" id="ingresar_card_form">
                   {% csrf_token %}
                   <div class="my-1 text-start">
@@ -131,8 +131,8 @@
                   </div>
                 </form>
               </div>
-            </div>
-            <div class="col-10 col-xl-5 col-md-6 col-sm-10 my-3 text-start">
+            </div><br>
+            <div class="col-sm-8">
               <div class="container list_cartas">
                 <h4 class="my-3 fw-bold">Lista de cartas index</h4>
                 <table class="table">
@@ -151,9 +151,9 @@
                     {% for perfil in perfil_card %}
                     <tr>
                       <th scope="row">{{perfil.id}}</th>
-                      <td>{{perfil.nombre_card | truncatechars:10}}</td>
-                      <td>{{perfil.cargo_card | truncatechars:10}}</td>
-                      <td>{{perfil.descrip_card | truncatechars:10}}</td>
+                      <td>{{perfil.nombre_card }}</td>
+                      <td>{{perfil.cargo_card }}</td>
+                      <td>{{perfil.descrip_card}}</td>
                       <td>
                         <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                           data-bs-target="#Modal_perfil_{{perfil.id}}">
@@ -192,7 +192,7 @@
           <div class="row">
             <div class="col-sm-4">
               <div class="container box_carta">
-                <h4>Ingresar publicación</h4>
+                <h4 class="my-3 fw-bold">Ingresar publicación</h4>
                 <nav>
                   <div class="nav nav-pills nav-justified" id="nav-tab" role="tablist">
                     <button class="nav-link  nav-link-btn active" id="normal-tab" data-bs-toggle="tab"
@@ -213,46 +213,47 @@
                     aria-labelledby="normal-tab" tabindex="0">
 
                     <div class="text-start">
-                    <form action="" method="POST" enctype="multipart/form-data" id="ingresar_publi_form">
-                      {% csrf_token %}
-                      <div><br>
-                        <label>Imagen : </label>
-                        <input class="form-control form-control-sm" id="formFileSm" type="file" name="img_pub" required>
-                        {% if form_public.img_pub.errors%}
-                        <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
-                          {{form_public.img_pub.errors}}
+                      <form action="" method="POST" enctype="multipart/form-data" id="ingresar_publi_form">
+                        {% csrf_token %}
+                        <div><br>
+                          <label>Imagen : </label>
+                          <input class="form-control form-control-sm" id="formFileSm" type="file" name="img_pub"
+                            required>
+                          {% if form_public.img_pub.errors%}
+                          <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                            {{form_public.img_pub.errors}}
+                          </div>
+                          {%endif%}
                         </div>
-                        {%endif%}
-                      </div>
-                      <div><br>
-                        <label for="">Nombre : </label>
-                        <input class="form-control form-control-sm" type="text" placeholder="Nombre" required
-                          aria-label=".form-control-sm example" name="nombre_pub"
-                          value="{{form_public.nombre_pub.value}}">
-                        {% if form_public.nombre_pub.errors %}
-                        <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
-                          {{form_public.nombre_pub.errors}}
+                        <div><br>
+                          <label for="">Nombre : </label>
+                          <input class="form-control form-control-sm" type="text" placeholder="Nombre" required
+                            aria-label=".form-control-sm example" name="nombre_pub"
+                            value="{{form_public.nombre_pub.value}}">
+                          {% if form_public.nombre_pub.errors %}
+                          <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                            {{form_public.nombre_pub.errors}}
+                          </div>
+                          {%endif%}
                         </div>
-                        {%endif%}
-                      </div>
-                      <div><br>
-                        <label for="">Descripcion:</label>
-                        <input class="form-control form-control-sm" type="text" placeholder="Descripción" required
-                          aria-label=".form-control-sm example" name="descrip_pub"
-                          value="{{form_public.descrip_pub.value}}">
-                        {% if form_public.descrip_pub.errors%}
-                        <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
-                          {{form_public.descrip_pub.errors}}
+                        <div><br>
+                          <label for="">Descripcion:</label>
+                          <input class="form-control form-control-sm" type="text" placeholder="Descripción" required
+                            aria-label=".form-control-sm example" name="descrip_pub"
+                            value="{{form_public.descrip_pub.value}}">
+                          {% if form_public.descrip_pub.errors%}
+                          <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
+                            {{form_public.descrip_pub.errors}}
+                          </div>
+                          {%endif%}
+                        </div><br>
+                        <div class="text-center">
+                          <button type="submit" class="btn btn-primary" form="ingresar_publi_form"
+                            name="public_ingresa">Enviar</button>
                         </div>
-                        {%endif%}
-                      </div><br>
-                      <div class="text-center">
-                        <button type="submit" class="btn btn-primary" form="ingresar_publi_form"
-                          name="public_ingresa">Enviar</button>
-                      </div>
-                    </form>
+                      </form>
                     </div>
-                    
+
                   </div>
                   <!-- publicidad cursos -->
                   <div class="tab-pane fade" id="nav-cursos" role="tabpanel" aria-labelledby="nav-cursos-tab"
@@ -279,7 +280,7 @@
 
             <div class="col-sm-8">
               <div class="container list_cartas">
-                <h4>Lista de publicaciones index</h4>
+                <h4 class="my-3 fw-bold">Lista de publicaciones index</h4>
                 <table class="table">
                   <thead>
                     <tr>
@@ -345,68 +346,60 @@
           <div class="container text-center ">
             <form action="" method="POST" enctype="multipart/form-data" id="update_card_{{perfil2.id}}">
               {% csrf_token %}
+              <h3>Modificación de Carta</h3>
               <input type="hidden" value="{{perfil2.id}}" id="id_update" name="id_update">
               <div class="row justify-content-center  align-items-center ">
-                <div class="col-md-6">
-                  <div class="container text-center">
-                    <div class="row">
-                      <div class="col-4 text-start">
-                        <h6>Nombre :</h6>
-                      </div>
-                      <div class="col-8 text-start">
-                        <input type="text" style="width: 350px;" id="nombre_card" name="nombre_card"
-                          class="form-control" value="{{perfil2.nombre_card.value}}">
-                        {% if form_card_up.nombre_card.errors%}
-                        <div class="alert alert-warning alert-bg " role="alert">
-                          {{form_card_up.nombre_card.errors}}
-                        </div>
-                        {%endif%}
-
-                      </div>
+                <div class="col-2"></div>
+                <div class="col-4">
+                  <div class="my-1 text-start">
+                    <label class="my-1" for="">Imagen : </label>
+                    <input class="form-control form-control-sm" type="file" name="img_card_up" id="img_card_up">
+                    {% if form_card_up.img_card.errors%}
+                    <div class="alert alert-warning alert-bg " role="alert">
+                      {{form_card_up.img_card.errors}}
                     </div>
-                    <div class="row">
-                      <div class="col-4 text-start">
-                        <h6>Cargo :</h6>
-                      </div>
-                      <div class="col-8 text-start">
-                        <textarea type="text" id="cargo_card" name="cargo_card" class="form-control"
-                          style="width: 350px; height: 150px;">{{perfil2.cargo_card}}</textarea>
-                        {% if form_card_up.cargo_card.errors%}
-                        <div class="alert alert-warning alert-bg " role="alert">
-                          {{form_card_up.cargo_card.errors}}
-                        </div>
-                        {%endif%}
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-4 text-start">
-                        <h6>Descripcion :</h6>
-                      </div>
-                      <div class="col-8 text-start">
-                        <textarea type="text" id="descrip_card" name="descrip_card" class="form-control"
-                          style="width: 350px; height: 150px;">{{perfil2.descrip_card}}</textarea>
-                        {% if form_card_up.descrip_card.errors%}
-                        <div class="alert alert-warning alert-bg " role="alert">
-                          {{form_card_up.descrip_card.errors}}
-                        </div>
-                        {%endif%}
-                      </div>
-                    </div>
+                    {%endif%}
 
                   </div>
+                  <div class="my-1 text-start">
+                    <label class="my-1" for="">Nombre : </label>
+                    <input class="form-control form-control-sm" type="text" id="nombre_card" name="nombre_card"
+                      value="{{perfil2.nombre_card}}">
+                    {% if form_card_up.nombre_card.errors%}
+                    <div class="alert alert-warning alert-bg " role="alert">
+                      {{form_card_up.nombre_card.errors}}
+                    </div>
+                    {%endif%}
+                  </div>
+                  <div class="my-1 text-start">
+                    <label class="my-1" for="">Cargo : </label>
+                    <textarea class="form-control form-control-sm" type="text" id="cargo_card"
+                      name="cargo_card">{{perfil2.cargo_card}}</textarea>
+                    {% if form_card_up.cargo_card.errors%}
+                    <div class="alert alert-warning alert-bg " role="alert">
+                      {{form_card_up.cargo_card.errors}}
+                    </div>
+                    {%endif%}
+                  </div>
+                  <div class="my-1 text-start">
+                    <label class="my-1" for="">Descripcion:</label>
+                    <textarea class="form-control form-control-sm" type="text" id="descrip_card"
+                      name="descrip_card">{{perfil2.descrip_card}}</textarea>
+                    {% if form_card_up.descrip_card.errors%}
+                    <div class="alert alert-warning alert-bg " role="alert">
+                      {{form_card_up.descrip_card.errors}}
+                    </div>
+                    {%endif%}
+                  </div>
+
                 </div>
-                <div class="col-sm-5 ">
-                  <h4></h4>
-                  <h6>Imagen</h6>
-                  <input type="file" class="form-control form-control-sm" name="img_card_up" id="img_card_up">
-                  {% if form_card_up%}
-                  <div class="alert alert-warning alert-bg " role="alert">
-                    {{form_card_up.img_card.errors}}
-                  </div>
-                  {%endif%}
+                <div class="col-4 ">
+                  <h5>Imagen</h5>
+
                   <img src="{{perfil2.img_card.url}}" width="350px"><br>
 
                 </div>
+                <div class="col-2"></div>
               </div>
             </form>
 
@@ -440,57 +433,45 @@
             {%csrf_token%}
             <input type="hidden" value="{{public.id}}" name="id_update_pub" id="id_update_pub_{{public.id}}">
             <div class="container text-center ">
+              <h3>Modificación de Publicidad</h3>
               <div class="row justify-content-center  align-items-center ">
                 <div class="col-md-1"></div>
-                <div class="col-md-6">
-                  <div class="container text-center">
-                    <div class="row">
-                      <div class="col-4 text-start">
-                        <h6>Titulo :</h6>
-                      </div>
-                      <div class="col-8 text-start">
-
-                        <input type="text" style="width: 350px;" id="nombre_pub" name="nombre_pub" class="form-control"
-                          value="{{public.nombre_pub}}">
-                        {% if form_public_up.nombre_pub.errors%}
-                        <div class="alert alert-warning alert-bg " role="alert">
-                          {{form_public_up.nombre_pub.errors}}
-                        </div>
-                        {%endif%}
-                      </div>
+                <div class="col-md-6 text-start">
+                  <div><br>
+                    <label>Imagen : </label>
+                    <input class="form-control form-control-sm" type="file" name="img_pub_up" id="img_pub_up">
+                    {% if form_public_up.img_pub_up.errors%}
+                    <div class="alert alert-warning alert-bg " role="alert">
+                      {{form_public_up.img_pub_up.errors}}
                     </div>
-
-                    <div class="row">
-                      <div class="col-4 text-start">
-                        <h6>Descripcion :</h6>
-                      </div>
-                      <div class="col-8 text-start">
-                        <textarea type="text" id="descrip_pub" name="descrip_pub" class="form-control"
-                          style="width: 350px; height: 150px;">{{public.descrip_pub}}</textarea>
-                        {% if form_public_up.descrip_pub.errors%}
-                        <div class="alert alert-warning alert-bg " role="alert">
-                          {{form_public_up.descrip_pub.errors}}
-                        </div>
-                        {%endif%}
-                      </div>
-                    </div>
-
+                    {%endif%}
                   </div>
-                </div>
-                <div class="col-sm-5 ">
-                  <h4></h4>
-                  <h6>Imagen</h6>
-                  <input type="file" class="form-control" name="img_pub_up" id="img_pub_up">
-                  {% if form_public_up.img_pub_up.errors%}
+                  <div><br>
+                    <label for="">Nombre : </label>
+                    <input class="form-control form-control-sm" type="text"  id="nombre_pub" name="nombre_pub"
+                    value="{{public.nombre_pub}}">
+                  {% if form_public_up.nombre_pub.errors%}
                   <div class="alert alert-warning alert-bg " role="alert">
-                    {{form_public_up.img_pub_up.errors}}
+                    {{form_public_up.nombre_pub.errors}}
                   </div>
                   {%endif%}
-                  <br>
+                  </div>
+                  <div><br>
+                    <label for="">Descripcion:</label>
+                    <textarea class="form-control form-control-sm" type="text" id="descrip_pub" name="descrip_pub"
+                    >{{public.descrip_pub}}</textarea>
+                   {% if form_public_up.descrip_pub.errors%}
+                   <div class="alert alert-warning alert-bg " role="alert">
+                     {{form_public_up.descrip_pub.errors}}
+                   </div>
+                   {%endif%}
+                  </div><br>
+                </div>
+                <div class="col-4">
+                  <h5>Imagen</h5>
                   <img src="{{public.img_pub.url}}" class="card-img-top">
                 </div>
               </div>
-
             </div>
           </form>
         </div>
@@ -597,8 +578,8 @@
       </div>
     </div>
   </div>
-   <!-- Modal  modificacion -->
-   <div class="modal fade" id="aviso_mod" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <!-- Modal  modificacion -->
+  <div class="modal fade" id="aviso_mod" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -666,21 +647,21 @@
 
   {% if form_card_up %}
   <script>
-      $(document).ready(function () {
-          const myModal = new bootstrap.Modal('#Modal_perfil_{{form_card_up.id_update.value}}');
-          myModal.show();
-      });
+    $(document).ready(function () {
+      const myModal = new bootstrap.Modal('#Modal_perfil_{{form_card_up.id_update.value}}');
+      myModal.show();
+    });
   </script>
-{%endif%}
+  {%endif%}
 
-{% if form_public_up %}
-    <script>
-        $(document).ready(function () {
-            const myModal = new bootstrap.Modal('#Modal_public_{{form_curso_up.id_update_pub.value}}');
-            myModal.show();
-        });
-    </script>
-{%endif%}
+  {% if form_public_up %}
+  <script>
+    $(document).ready(function () {
+      const myModal = new bootstrap.Modal('#Modal_public_{{form_curso_up.id_update_pub.value}}');
+      myModal.show();
+    });
+  </script>
+  {%endif%}
 
 
 

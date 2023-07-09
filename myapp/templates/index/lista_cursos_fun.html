@@ -65,7 +65,7 @@
                 {% csrf_token %}
                 <label for="">Nombre curso :</label>
                 <div class="input-group">
-                  <input type="text" name="nombre_curso_buscar" id="nombre_curso_buscar" class="form-control">
+                  <input type="text" name="nombre_curso_buscar" id="nombre_curso_buscar" class="form-control" value="{{in_busca_nombre.nombre_curso_buscar.value}}">
                   <button class="btn btn-warning" type="submit" id="filtro_cursos" form="filtro_cursos_nombre"><img
                       class="img-busqueda" src="{% static 'img/busqueda2.png' %}"></button>
                 </div>
@@ -288,7 +288,7 @@
           <h1 class="modal-title fs-5" id="exampleModalLabel">Aviso Falla!!</h1>
         </div>
         <div class="modal-body">
-          <div class="alert alert-danger" role="alert">
+          <div class="alert alert-danger" role="alert"  style="height: 100px;">
             <div class="row">
               <div class="col-2">
                 <img src="{% static 'img/multiplicar.png' %}" width="65px">

@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_filters %}
 {% block content %}
 
 <!DOCTYPE html>
@@ -133,7 +134,7 @@
                                 {% endif %}
                             </div>
                             <div class="cursos-add-box">
-                                <label for="">Descripción precentación:</label>
+                                <label for="">Descripción presentación:</label>
                                 <textarea class="form-control form-control-sm" type="text"
                                     placeholder="Descripción máximo 260 caracteres"
                                     aria-label=".form-control-sm example" name="descrip_corta_curso" required
@@ -295,7 +296,7 @@
                         <div class="input-group text-center">
                             <label class="input-group-text">Buscar Curso</label>
                             <input type="text" name="busqueda_curso_operador" id="busqueda_curso_operador"
-                                class="form-control">
+                                class="form-control" value="{{in_busca_cur.busqueda_curso_operador.value}}">
                             <button class="btn btn-warning" type="submit" form="buscar_curso_operador"
                                 name="curso_buscador" id="curso_buscador"><img src="{% static 'img/busqueda2.png' %}"
                                     height="15px"></button>
@@ -393,262 +394,258 @@
                         </tbody>
                     </table>
                 </div>
-
-                {% for list_cursos in cursos %}
-                <!-- Modal -->
-                <!-- Modal update curso-->
-
-
-                <div class="modal fade" id="Modal_curos_{{list_cursos.id}}" tabindex="-1"
-                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-xl">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Curso N°{{list_cursos.id}}</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="" method="POST" id="actualizar_curso{{list_cursos.id}}"
-                                    enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    <input type="hidden" value="{{list_cursos.id}}" id="curso_actualizar"
-                                        name="curso_actualizar">
-                                    <div class="container text-center ">
-                                        <div class="row justify-content-center  align-items-center ">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-6">
-                                                <div class="container text-center">
-                                                    <div class="row">
-                                                        <div class="col-4 text-start">
-                                                            <h6>Titulo :</h6>
-                                                        </div>
-                                                        <div class="col-8 text-start">
-                                                            <input class="form-control" type="text"
-                                                                style="width: 350px;"
-                                                                id="nombre_curso_up_{{list_cursos.id}}"
-                                                                name="nombre_curso_up"
-                                                                value="{{list_cursos.nombre_curso}}">
-                                                            {% if form_curso_up.nombre_curso.errors %}
-                                                            <div class="alert alert-warning alert-bg " role="alert">
-                                                                {{form_curso_up.nombre_curso.errors}}
-                                                            </div>
-                                                            {% endif %}
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-4 text-start">
-                                                            <h6>Descripcion precentación :</h6>
-                                                        </div>
-                                                        <div class="col-8 text-start"><textarea class="form-control"
-                                                                type="text" id="descrip_corta_curso"
-                                                                name="descrip_corta_curso"
-                                                                style="width: 350px; height: 150px;">{{list_cursos.descrip_corta_curso}}</textarea>
-                                                            {% if form_curso_up.descrip_corta_curso.errors %}
-                                                            <div class="alert alert-warning alert-bg " role="alert">
-                                                                {{form_curso_up.descrip_corta_curso.errors}}
-                                                            </div>
-                                                            {% endif %}
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-4 text-start">
-                                                            <h6>Descripcion Completa :</h6>
-                                                        </div>
-                                                        <div class="col-8 text-start"><textarea class="form-control"
-                                                                type="text" id="descrip_larga_curso"
-                                                                name="descrip_larga_curso"
-                                                                style="width: 350px; height: 150px;">{{list_cursos.descrip_larga_curso}}</textarea>
-                                                            {% if form_curso_up.descrip_larga_curso.errors %}
-                                                            <div class="alert alert-warning alert-bg " role="alert">
-                                                                {{form_curso_up.descrip_larga_curso.errors}}
-                                                            </div>
-                                                            {% endif %}
-                                                        </div>
-                                                    </div>
-                                                    <div class="row ">
-                                                        <div class="col-4 text-start"><label
-                                                                class="form-label">Requisistos :</label></div>
-                                                        <div class="col-8 text-start"><input class="form-control"
-                                                                type="text" style="width: 350px;" id="requisitos_curso"
-                                                                name="requisitos_curso"
-                                                                value="{{list_cursos.requisitos_curso}}">
-                                                            {% if form_curso_up.requisitos_curso.errors %}
-                                                            <div class="alert alert-warning alert-bg " role="alert">
-                                                                {{form_curso_up.requisitos_curso.errors}}
-                                                            </div>
-                                                            {% endif %}
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="row ">
-                                                        <div class="col-4 text-start">
-                                                            <h6>Hospital :</h6>
-                                                        </div>
-                                                        <div class="col-8 text-start">
-                                                            <select name="hospital_curso" id="hospital_curso"
-                                                                class="form-select">
-                                                                <option value="{{list_cursos.hospital_curso}}" selected>
-                                                                    {{list_cursos.hospital_curso}} --
-                                                                    (Actual)</option>
-                                                                {%for class_hosp in class_hospital %}
-                                                                <option value="{{class_hosp.nombre_hospital}}">
-                                                                    {{class_hosp.nombre_hospital}}</option>
-                                                                {% endfor %}
-                                                            </select>
-                                                        </div>
-                                                        {% if form_curso_up.hospital_curso.errors %}
-                                                        <div class="alert alert-warning alert-bg " role="alert">
-                                                            {{form_curso_up.hospital_curso.errors}}
-                                                        </div>
-                                                        {% endif %}
-                                                    </div>
-                                                    <div class="row ">
-                                                        <div class="col-4 text-start">
-                                                            <h6>Servicio :</h6>
-                                                        </div>
-                                                        <div class="col-8 text-start">
-                                                            <select name="servicio_curso" id="servicio_curso"
-                                                                class="form-select">
-                                                                <option value="{{list_cursos.servicio_curso}}" selected>
-                                                                    {{list_cursos.servicio_curso}} --
-                                                                    (Actual)</option>
-                                                                {%for class_serv in class_serv %}
-                                                                <option value="{{class_serv.nombre_sev}}">
-                                                                    {{class_serv.nombre_sev}}</option>
-                                                                {% endfor %}
-                                                            </select>
-                                                        </div>
-                                                        {% if form_curso_up.servicio_curso.errors %}
-                                                        <div class="alert alert-warning alert-bg " role="alert">
-                                                            {{form_curso_up.servicio_curso.errors}}
-                                                        </div>
-                                                        {% endif %}
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-4 text-start">
-                                                            <h6>Inicia :</h6>
-                                                        </div>
-                                                        <div class="col-8 text-start"><input name="time_start_curso"
-                                                                id="time_start_curso" name="time_start_curso"
-                                                                class="form-control" type="date"
-                                                                aria-labelledby="helpertimestart"
-                                                                value="{{ list_cursos.time_start_curso|date:'Y-m-d' }}">
-                                                            {% if form_curso_up.time_start_curso.errors %}
-                                                            <div class="alert alert-warning alert-bg " role="alert">
-                                                                {{form_curso_up.time_start_curso.errors}}
-                                                            </div>
-                                                            {% endif %}
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-4 text-start ">
-                                                            <h6>Finaliza :</h6>
-                                                        </div>
-                                                        <div class="col-8 text-start"><input class="form-control"
-                                                                type="date" aria-labelledby="helpertimeend"
-                                                                id="time_end_curso" name="time_end_curso"
-                                                                value="{{ list_cursos.time_end_curso|date:'Y-m-d' }}">
-                                                            {% if form_curso_up.time_end_curso.errors %}
-                                                            <div class="alert alert-warning alert-bg " role="alert">
-                                                                {{form_curso_up.time_end_curso.errors}}
-                                                            </div>
-                                                            {% endif %}
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-4 text-start">
-                                                            <h6>Personal Dirigido :</h6>
-                                                        </div>
-                                                        <div class="col-8 text-start">
-                                                            <div>
-                                                                <div class="form-check form-check-inline text-start">
-                                                                    <div>
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                            id="inlineCheckbox1" value="Administrativo"
-                                                                            name="personal_cursos">
-                                                                        <label class="form-check-label"
-                                                                            for="inlineCheckbox1">Personal
-                                                                            administrativo</label>
-                                                                    </div>
-                                                                    <div>
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                            id="inlineCheckbox2" value="Secretaria"
-                                                                            name="personal_cursos">
-                                                                        <label class="form-check-label"
-                                                                            for="inlineCheckbox1">Secretaria</label>
-                                                                    </div>
-                                                                    <div>
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                            id="inlineCheckbox3" value="Médicos"
-                                                                            name="personal_cursos">
-                                                                        <label class="form-check-label"
-                                                                            for="inlineCheckbox1">Médicos</label>
-                                                                    </div>
-                                                                    <div>
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                            id="inlineCheckbox4" value="Enfermero/a"
-                                                                            name="personal_cursos">
-                                                                        <label class="form-check-label"
-                                                                            for="inlineCheckbox1">Enfermero/a</label>
-                                                                    </div>
-                                                                    <div>
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                            id="inlineCheckbox5" value="Auxiliares"
-                                                                            name="personal_cursos">
-                                                                        <label class="form-check-label"
-                                                                            for="inlineCheckbox1">Auxiliares</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            {% if form_curso_up.personal_cursos.errors %}
-                                                            <div class="alert alert-warning alert-bg " role="alert">
-                                                                {{form_curso_up.personal_cursos.errors}}
-                                                            </div>
-                                                            {% endif %}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-5 ">
-                                                <h4></h4>
-                                                <h6>Imagen</h6>
-                                                <input class="form-control form-control-sm" id="img_curso_up"
-                                                    type="file" name="img_curso_up">
-                                                {% if form_curso_up.img_curso_up.errors %}
-                                                <div class="alert alert-warning alert-bg " role="alert">
-                                                    {{form_curso_up.img_curso_up.errors}}
-                                                </div>
-                                                {% endif %}
-                                                <img src="{{list_cursos.img_curso.url}}" width="350px"><br>
-                                                <h6>Documento</h6>
-                                                <input class="form-control form-control-sm" id="doc_curso_up"
-                                                    type="file" name="doc_curso_up">
-                                                {% if form_curso_up.doc_curso_up.errors%}
-                                                <div class="alert alert-warning alert-bg " role="alert">
-                                                    {{form_curso_up.doc_curso_up.errors}}
-                                                </div>
-                                                {% endif %}
-                                                <a href="{{list_cursos.form_carga_curso}}"></a>
-                                                <label for="">{{list_cursos.form_carga_curso}}</label>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" form="actualizar_curso{{list_cursos.id}}" class="btn btn-primary"
-                                    id="curso_update{{list_cursos.id}}" name="curso_update">Guardar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
             </div>
         </div>
     </div>
+
+    {% for list_cursos in cursos %}
+    <!-- Modal -->
+    <!-- Modal update curso-->
+
+
+    <div class="modal fade" id="Modal_curos_{{list_cursos.id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Curso N°{{list_cursos.id}}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="POST" id="actualizar_curso{{list_cursos.id}}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" value="{{list_cursos.id}}" id="curso_actualizar" name="curso_actualizar">
+
+                        <div class="container text-center">
+                            <div class="row justify-content-center">
+                                <h4 class="text-center">Modificar Curso</h4>
+                                <div class="col-1"></div>
+                                <div class="col-5 text-start my-3">
+
+                                    <div class="cursos-add-box">
+                                        <label for="">Nombre del Curso:</label>
+                                        <input class="form-control form-control-sm" type="text"
+                                            id="nombre_curso_up_{{list_cursos.id}}" name="nombre_curso_up"
+                                            value="{{list_cursos.nombre_curso}}">
+                                        {% if form_curso_up.nombre_curso.errors %}
+                                        <div class="alert alert-warning alert-bg " role="alert">
+                                            {{form_curso_up.nombre_curso.errors}}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="cursos-add-box">
+                                        <label for="">Imagen:</label>
+                                        <input class="form-control form-control-sm" id="img_curso_up" type="file"
+                                            name="img_curso_up">
+                                        {% if form_curso_up.img_curso_up.errors %}
+                                        <div class="alert alert-warning alert-bg " role="alert">
+                                            {{form_curso_up.img_curso_up.errors}}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="cursos-add-box">
+                                        <label for="">Formulario de postulación:</label>
+                                        <input class="form-control form-control-sm" id="doc_curso_up" type="file"
+                                            name="doc_curso_up">
+                                        {% if form_curso_up.doc_curso_up.errors%}
+                                        <div class="alert alert-warning alert-bg " role="alert">
+                                            {{form_curso_up.doc_curso_up.errors}}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="cursos-add-box">
+                                        <label for="">Descripción presentación:</label>
+                                        <textarea class="form-control form-control-sm" type="text"
+                                            id="descrip_corta_curso" name="descrip_corta_curso"
+                                            style=" height: 150px;">{{list_cursos.descrip_corta_curso}}</textarea>
+                                        {% if form_curso_up.descrip_corta_curso.errors %}
+                                        <div class="alert alert-warning alert-bg " role="alert">
+                                            {{form_curso_up.descrip_corta_curso.errors}}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="cursos-add-box">
+                                        <label for="">Descripción completa:</label>
+                                        <textarea class="form-control form-control-sm" type="text"
+                                            id="descrip_larga_curso" name="descrip_larga_curso"
+                                            style="height: 150px;">{{list_cursos.descrip_larga_curso}}</textarea>
+                                        {% if form_curso_up.descrip_larga_curso.errors %}
+                                        <div class="alert alert-warning alert-bg " role="alert">
+                                            {{form_curso_up.descrip_larga_curso.errors}}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="cursos-add-box">
+                                        <label for="">Requisitos de aprobación:</label>
+                                        <input class="form-control form-control-sm" type="text" id="requisitos_curso"
+                                            name="requisitos_curso" value="{{list_cursos.requisitos_curso}}">
+                                        {% if form_curso_up.requisitos_curso.errors %}
+                                        <div class="alert alert-warning alert-bg " role="alert">
+                                            {{form_curso_up.requisitos_curso.errors}}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="cursos-add-box">
+                                        <label for="">Fecha de inicio de postulación:</label>
+                                        <input class="form-control form-control-sm" id="time_start_curso"
+                                            name="time_start_curso" class="form-control" type="date"
+                                            aria-labelledby="helpertimestart"
+                                            value="{{ list_cursos.time_start_curso|date:'Y-m-d' }}">
+                                        {% if form_curso_up.time_start_curso.errors %}
+                                        <div class="alert alert-warning alert-bg " role="alert">
+                                            {{form_curso_up.time_start_curso.errors}}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+
+
+                                    <div class="cursos-add-box">
+                                        <label for="">Fecha de termino de postulación:</label>
+                                        <input class="form-control form-control-sm" type="date"
+                                            aria-labelledby="helpertimeend" id="time_end_curso" name="time_end_curso"
+                                            value="{{ list_cursos.time_end_curso|date:'Y-m-d' }}">
+                                        {% if form_curso_up.time_end_curso.errors %}
+                                        <div class="alert alert-warning alert-bg " role="alert">
+                                            {{form_curso_up.time_end_curso.errors}}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="cursos-add-box">
+                                        <label for="">Hospital:</label>
+                                        <div class="input-group">
+                                            <select name="hospital_curso" id="hospital_curso" class="form-select form-select-sm">
+                                                <option value="{{list_cursos.hospital_curso}}" selected>
+                                                    {{list_cursos.hospital_curso}} --
+                                                    (Actual)</option>
+                                                {%for class_hosp in class_hospital %}
+                                                <option value="{{class_hosp.nombre_hospital}}">
+                                                    {{class_hosp.nombre_hospital}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        {% if form_curso_up.hospital_curso.errors %}
+                                        <div class="alert alert-warning alert-bg " role="alert">
+                                            {{form_curso_up.hospital_curso.errors}}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="cursos-add-box">
+                                        <label for="">Servicios dirigidos:</label>
+                                        <div class="input-group">
+                                            <select name="servicio_curso" id="servicio_curso" class="form-select form-select-sm">
+                                                <option value="{{list_cursos.servicio_curso}}" selected>
+                                                    {{list_cursos.servicio_curso}} --
+                                                    (Actual)</option>
+                                                {%for class_serv in class_serv %}
+                                                <option value="{{class_serv.nombre_sev}}">
+                                                    {{class_serv.nombre_sev}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        {% if form_curso_up.servicio_curso.errors %}
+                                        <div class="alert alert-warning alert-bg " role="alert">
+                                            {{form_curso_up.servicio_curso.errors}}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="row cursos-add-box">
+                                        <div class="col">
+                                            <label for="">Personal Dirigido:</label>
+                                        </div>
+                                        <div class="col">
+                                            <div>
+                                                <div class="form-check form-check-inline text-start">
+                                                    <div>
+                                                        <input class="form-check-input" type="checkbox"
+                                                            id="inlineCheckbox1" value="Administrativo"
+                                                            name="personal_cursos">
+                                                        <label class="form-check-label"
+                                                            for="inlineCheckbox1">Administrativo</label>
+                                                    </div>
+                                                    <div>
+                                                        <input class="form-check-input" type="checkbox"
+                                                            id="inlineCheckbox2" value="Secretaria"
+                                                            name="personal_cursos">
+                                                        <label class="form-check-label"
+                                                            for="inlineCheckbox1">Secretaria</label>
+                                                    </div>
+                                                    <div>
+                                                        <input class="form-check-input" type="checkbox"
+                                                            id="inlineCheckbox3" value="Médicos" name="personal_cursos">
+                                                        <label class="form-check-label"
+                                                            for="inlineCheckbox1">Médicos</label>
+                                                    </div>
+                                                    <div>
+                                                        <input class="form-check-input" type="checkbox"
+                                                            id="inlineCheckbox4" value="Enfermero/a"
+                                                            name="personal_cursos">
+                                                        <label class="form-check-label"
+                                                            for="inlineCheckbox1">Enfermero/a</label>
+                                                    </div>
+                                                    <div>
+                                                        <input class="form-check-input" type="checkbox"
+                                                            id="inlineCheckbox5" value="Auxiliares"
+                                                            name="personal_cursos">
+                                                        <label class="form-check-label"
+                                                            for="inlineCheckbox1">Auxiliares</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% if form_curso_up.personal_cursos.errors %}
+                                        <div class="alert alert-warning alert-bg " role="alert">
+                                            {{form_curso_up.personal_cursos.errors}}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-5 my-3">
+                                    <div class="container my-3">
+                                        <h5>Imagen </h5>
+                                        <img src="{{list_cursos.img_curso.url}}" width="350px"><br>
+                                    </div>
+                                    <div class="container my-3">
+                                        <h5>Documento</h5>
+                                        <input type="hidden" name="nombre_form"
+                                            value="{{ list_cursos.form_carga_curso }}">
+                                        
+                                        {% with list_cursos.form_carga_curso.name|split:"." as cursos %}
+                                            {% for termino in cursos %}
+                                                {% if termino == 'docx' or  termino == 'doc' %}
+                                                    <img src="{% static 'img/doc.png' %}" width="150px"><br>
+                                                {% elif  termino == 'xlsx' or  termino == 'xls' %}
+                                                    <img src="{% static 'img/xls.png' %}" width="150px"><br>
+                                                {% elif  termino == 'pptx' or  termino == 'ppt' %}
+                                                    <img src="{% static 'img/ppt.png' %}" width="150px"><br>
+                                                {% elif  termino == 'pdf' %}
+                                                    <img src="{% static 'img/pdf.png' %}" width="150px"><br>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endwith %}
+                                        <br>
+                                        <h6>Nombre del Documento</h6>
+                                        <label>{{ list_cursos.form_carga_curso.name}}</label>
+                                    </div>
+                                </div>
+                                <div class="col-1"></div>
+                            </div>
+                        </div>
+
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" form="actualizar_curso{{list_cursos.id}}" class="btn btn-primary"
+                        id="curso_update{{list_cursos.id}}" name="curso_update">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+
     <!-- Modal -->
     <!-- Modal falla de busqueda -->
     <div class="modal fade" id="fail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -658,7 +655,7 @@
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Aviso Falla!!</h1>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-danger" role="alert">
+                    <div class="alert alert-danger" role="alert" style="height: 100px;">
                         <div class="row">
                             <div class="col-2">
                                 <img src="{% static 'img/multiplicar.png' %}" width="65px">
@@ -731,8 +728,8 @@
                 <div class="modal-body">
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <button class="nav-link active" id="add-home-tab2" data-bs-toggle="tab" data-bs-target="#Agregar"
-                                type="button" role="tab" aria-controls="home-tab-pane"
+                            <button class="nav-link active" id="add-home-tab2" data-bs-toggle="tab"
+                                data-bs-target="#Agregar" type="button" role="tab" aria-controls="home-tab-pane"
                                 aria-selected="true">Agregar</button>
                             <button class="nav-link" id="nav-delete-tab2" data-bs-toggle="tab"
                                 data-bs-target="#Eliminar" type="button" role="tab" aria-controls="nav-profile"
@@ -747,7 +744,7 @@
                                     {%csrf_token %}
                                     <label for="" class="form-label">Ingrese el nombre del Hospital :</label>
                                     <input type="text" class="form-control" name="nombre_hospital" id="nombre_hospital">
-                                    
+
                                 </form>
                             </div>
                         </div>
@@ -764,7 +761,7 @@
                                             {{class_hosp.nombre_hospital}}</option>
                                         {% endfor %}
                                     </select>
-                                    
+
                                 </form>
                             </div>
 
@@ -772,8 +769,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-warning" form="ingresar_hospital" name="hosp_add" id="hosp_add">Enviar</button>
-                    <button type="submit" class="btn btn-danger" form="delete_hospital" name="hosp_delete" id="hosp_delete">Eliminar</button>
+                    <button type="submit" class="btn btn-warning" form="ingresar_hospital" name="hosp_add"
+                        id="hosp_add">Enviar</button>
+                    <button type="submit" class="btn btn-danger" form="delete_hospital" name="hosp_delete"
+                        id="hosp_delete">Eliminar</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -807,7 +806,7 @@
                                     {%csrf_token %}
                                     <label for="" class="form-label">Ingrese el nombre del Servicio :</label>
                                     <input type="text" class="form-control" name="nombre_sev" id="nombre_sev">
-                                   
+
                                 </form>
                             </div>
                         </div>
@@ -824,7 +823,7 @@
                                             {{class_serv.nombre_sev}}</option>
                                         {% endfor %}
                                     </select>
-                                    
+
                                 </form>
                             </div>
                         </div>
@@ -832,9 +831,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-warning" form="add_serv" name="serv_add"
-                    id="serv_add">Enviar</button>
+                        id="serv_add">Enviar</button>
                     <button class="btn btn-danger" type="submit" form="delete_serv" name="serv_delete"
-                                        id="serv_delete">Eliminar</button>
+                        id="serv_delete">Eliminar</button>
 
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
@@ -1050,39 +1049,39 @@
         });
     </script>
     {%endif%}
-    
+
 
     <script>
         $(function () {
-          $('#hosp_delete').hide();
-          $('#add-home-tab2').click(function () {
-            $('#hosp_add').show();
             $('#hosp_delete').hide();
-    
-          });
-          $('#nav-delete-tab2').click(function () {
-            $('#hosp_add').hide();
-            $('#hosp_delete').show();
-    
-          });
+            $('#add-home-tab2').click(function () {
+                $('#hosp_add').show();
+                $('#hosp_delete').hide();
+
+            });
+            $('#nav-delete-tab2').click(function () {
+                $('#hosp_add').hide();
+                $('#hosp_delete').show();
+
+            });
         })
-      </script>
-      
-      <script>
+    </script>
+
+    <script>
         $(function () {
-          $('#serv_delete').hide();
-          $('#add-home-tab').click(function () {
-            $('#serv_add').show();
             $('#serv_delete').hide();
-    
-          });
-          $('#nav-delete-tab').click(function () {
-            $('#serv_add').hide();
-            $('#serv_delete').show();
-    
-          });
+            $('#add-home-tab').click(function () {
+                $('#serv_add').show();
+                $('#serv_delete').hide();
+
+            });
+            $('#nav-delete-tab').click(function () {
+                $('#serv_add').hide();
+                $('#serv_delete').show();
+
+            });
         })
-      </script>
+    </script>
 
 
 

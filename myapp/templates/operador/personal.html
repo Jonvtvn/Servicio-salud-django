@@ -74,9 +74,9 @@
   <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="Agregar_cursos" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
       <div class="container">
-        <div class="row">
-          <div class="col">
-            <div class="container">
+        <div class="row justify-content-center row-cols-1 row-cols-xs-1 row-cols-sm-1 row-cols-md-2">
+          <div class="col text-center">
+            <div class="container text-start">
               <h1>Crear nuevo usuario</h1>
               <form action="" method="POST" id="user_create">
                 {%csrf_token%}
@@ -233,7 +233,7 @@
   <!-- Modal publicidad -->
   <div class="modal fade" id="Modal_user_{{user.id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog ">
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalLabel">Usuario N°{{user.id}}</h1>

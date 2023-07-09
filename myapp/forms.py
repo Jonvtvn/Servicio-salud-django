@@ -222,7 +222,7 @@ class CreateNewCursos(forms.ModelForm):
         return uploaded_image
 
     def clean_form_carga_curso(self):
-        DOCUMENTS_FILE_TYPES = ['docx', 'xlsx', 'pptx', 'pdf']
+        DOCUMENTS_FILE_TYPES = ['docx', 'xlsx', 'pptx', 'pdf', 'xls','doc', 'ppt']
         uploaded_document = self.cleaned_data.get("form_carga_curso",  False)
         extension = str(uploaded_document).split('.')[-1]
         file_type = extension.lower()
@@ -231,7 +231,7 @@ class CreateNewCursos(forms.ModelForm):
 
         if file_type not in DOCUMENTS_FILE_TYPES:
             raise ValidationError(
-                "El archivo tiene que ser un documento de word o PDF.")
+                "El archivo tiene que ser un documento de Word, PPT, Exel o PDF.")
         return uploaded_document
 
     def clean_descrip_corta_curso(self):
@@ -401,7 +401,7 @@ class update_curso(forms.Form):
     personal_cursos = forms.CharField(max_length=80, required=False)
 
     def clean_doc_curso_up(self):
-        DOCUMENTS_FILE_TYPES = ['docx', 'xlsx', 'pptx', 'pdf']
+        DOCUMENTS_FILE_TYPES = ['docx', 'xlsx', 'pptx', 'pdf', 'xls','doc', 'ppt']
         uploaded_document = self.cleaned_data.get("doc_curso_up",  False)
         extension = str(uploaded_document).split('.')[-1]
         file_type = extension.lower()
@@ -409,7 +409,7 @@ class update_curso(forms.Form):
             return uploaded_document
         if file_type not in DOCUMENTS_FILE_TYPES:
             raise ValidationError(
-                "El archivo tiene que ser un documento de word o PDF.")
+                "El archivo tiene que ser un documento de Word, PPT, Exel o PDF.")
         return uploaded_document
     
     def clean_img_curso_up(self):

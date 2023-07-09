@@ -74,9 +74,9 @@
             {% for publicidad2 in publicidad %}
             <div class="carousel-item" data-bs-interval="5000">
               {% if publicidad2.is_curso %}
-                <form action="/lista_cursos_fun/" method="POST" id="form_is_curso_{{publicidad2.id}}">
+                <form action="/lista_cursos_fun/" method="POST" id="form_is_curso_{{publicidad2.id}}" >
                   {%csrf_token %}
-                  <img src="{{publicidad2.img_pub.url}}" class="d-block w-100" width="800px" height="400px" onclick="prueba('{{publicidad2.id}}');">
+                  <img src="{{publicidad2.img_pub.url}}" class="d-block w-100" width="800px" height="400px" onclick="prueba('{{publicidad2.id}}');" style="cursor: pointer;">
                   <input type="hidden" name="curso_activo" id="curso_activo_{{publicidad2.id}}" value="{{publicidad2.is_curso_id}}">
                   <input type="hidden" name="btn_pub_curso" id="btn_pub_curso" value="true">
                 </form>
@@ -148,16 +148,16 @@
   </div>
   <div class="container-fluid box-cards py-5 mt-4">
     <h1 class="box-text-cards text-center py-5">Autoridades Encargadas</h1>
-    <div class="container container-card-box">
-      <div class="row justify-content-center">
+    <div class="container text-center">
+      <div class="row justify-content-center row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-3">
         {% for perfil_card in perfil_card %}
-        <div class="col-lg-4 col-md-6 col-sm-12 col-lg-2 col-sm">
-          <div class="card m-3">
-            <img class="card-img-top" src="{{perfil_card.img_card.url}}" alt="Imagen 1">
-            <div class="card-body card-body-enc text-center">
-              <h5 class="card-title">{{perfil_card.nombre_card}}</h5>
-              <p>Cargo :  {{perfil_card.cargo_card}}</p>
-              <p>{{perfil_card.descrip_card}}</p>
+        <div class="col mb-3 text-center" style="width: 18rem;">
+          <div class="card" >
+            <img src="{{perfil_card.img_card.url}}" class="card-img-top">
+            <div class="card-body bg-light">
+              <h5 class="card-title fw-bold text-uppercase">{{perfil_card.nombre_card}}</h5>
+              <p >Cargo: {{perfil_card.cargo_card}}</p>
+              <p >{{perfil_card.descrip_card}}</p>
             </div>
           </div>
         </div>
