@@ -758,20 +758,22 @@ def registrar(request):
                     userss.email = form.cleaned_data['email']
                 if 'password' in request.POST:
                     pw = form.cleaned_data['password']
-                    # Verificar si la contraseña es completamente numérica
-                    if str(pw).isnumeric():
-                        form.add_error("password","La contraseña no puede ser completamente numérica.")
-                        return render(request, "operador/personal.html" ,{"form_update": form ,"lista":True,"usuarios":usuarios})
-                    # Verificar si la contraseña cumple con los requisitos
-                    elif not re.search("[a-zA-Z]", pw) or not re.search("[0-9]", pw):
-                        form.add_error("password","La contraseña debe contener al menos una letra y un número.") 
-                        return render(request, "operador/personal.html" ,{"form_update": form ,"lista":True,"usuarios":usuarios})
-                    # Verificar si la contraseña es lo suficientemente larga
-                    elif len(pw) < 8:
-                        form.add_error("password","La contraseña debe contener al menos 8 caracteres.") 
-                        return render(request, "operador/personal.html" ,{"form_update": form ,"lista":True,"usuarios":usuarios})
-                    else:
-                        userss.set_password(pw)
+                    if pw:
+                        # Verificar si la contraseña es completamente numérica
+                        if str(pw).isnumeric():
+                            form.add_error("password","La contraseña no puede ser completamente numérica.")
+                            return render(request, "operador/personal.html" ,{"form_update": form ,"lista":True,"usuarios":usuarios})
+                        # Verificar si la contraseña cumple con los requisitos
+                        elif not re.search("[a-zA-Z]", pw) or not re.search("[0-9]", pw):
+                            form.add_error("password","La contraseña debe contener al menos una letra y un número.") 
+                            return render(request, "operador/personal.html" ,{"form_update": form ,"lista":True,"usuarios":usuarios})
+                        # Verificar si la contraseña es lo suficientemente larga
+                        elif len(pw) < 8:
+                            form.add_error("password","La contraseña debe contener al menos 8 caracteres.") 
+                            return render(request, "operador/personal.html" ,{"form_update": form ,"lista":True,"usuarios":usuarios})
+                        else:
+                            userss.set_password(pw)
+                    
                 userss.save()
                 modificacion = "Usuario Modificado "
                 return render(request, "operador/personal.html" ,{"modificacion":modificacion,"lista":True,"usuarios":usuarios})

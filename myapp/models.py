@@ -31,7 +31,7 @@ class create_nuevo_publicacion(models.Model):
     nombre_pub = models.CharField(max_length=100)
     descrip_pub = models.CharField(max_length=100, default='SOME STRING')
     is_curso = models.BooleanField(default=False)
-    is_curso_id = models.IntegerField()
+    is_curso_id = models.IntegerField(null=True,default=None)
 
 class create_new_consultas(models.Model):
     id = models.AutoField(primary_key=True)

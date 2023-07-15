@@ -514,7 +514,8 @@
                                     <div class="cursos-add-box">
                                         <label for="">Hospital:</label>
                                         <div class="input-group">
-                                            <select name="hospital_curso" id="hospital_curso" class="form-select form-select-sm">
+                                            <select name="hospital_curso" id="hospital_curso"
+                                                class="form-select form-select-sm">
                                                 <option value="{{list_cursos.hospital_curso}}" selected>
                                                     {{list_cursos.hospital_curso}} --
                                                     (Actual)</option>
@@ -533,7 +534,8 @@
                                     <div class="cursos-add-box">
                                         <label for="">Servicios dirigidos:</label>
                                         <div class="input-group">
-                                            <select name="servicio_curso" id="servicio_curso" class="form-select form-select-sm">
+                                            <select name="servicio_curso" id="servicio_curso"
+                                                class="form-select form-select-sm">
                                                 <option value="{{list_cursos.servicio_curso}}" selected>
                                                     {{list_cursos.servicio_curso}} --
                                                     (Actual)</option>
@@ -609,19 +611,19 @@
                                         <h5>Documento</h5>
                                         <input type="hidden" name="nombre_form"
                                             value="{{ list_cursos.form_carga_curso }}">
-                                        
+
                                         {% with list_cursos.form_carga_curso.name|split:"." as cursos %}
-                                            {% for termino in cursos %}
-                                                {% if termino == 'docx' or  termino == 'doc' %}
-                                                    <img src="{% static 'img/doc.png' %}" width="150px"><br>
-                                                {% elif  termino == 'xlsx' or  termino == 'xls' %}
-                                                    <img src="{% static 'img/xls.png' %}" width="150px"><br>
-                                                {% elif  termino == 'pptx' or  termino == 'ppt' %}
-                                                    <img src="{% static 'img/ppt.png' %}" width="150px"><br>
-                                                {% elif  termino == 'pdf' %}
-                                                    <img src="{% static 'img/pdf.png' %}" width="150px"><br>
-                                                {% endif %}
-                                            {% endfor %}
+                                        {% for termino in cursos %}
+                                        {% if termino == 'docx' or termino == 'doc' %}
+                                        <img src="{% static 'img/doc.png' %}" width="150px"><br>
+                                        {% elif termino == 'xlsx' or termino == 'xls' %}
+                                        <img src="{% static 'img/xls.png' %}" width="150px"><br>
+                                        {% elif termino == 'pptx' or termino == 'ppt' %}
+                                        <img src="{% static 'img/ppt.png' %}" width="150px"><br>
+                                        {% elif termino == 'pdf' %}
+                                        <img src="{% static 'img/pdf.png' %}" width="150px"><br>
+                                        {% endif %}
+                                        {% endfor %}
                                         {% endwith %}
                                         <br>
                                         <h6>Nombre del Documento</h6>

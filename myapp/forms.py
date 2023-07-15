@@ -148,6 +148,8 @@ class CreateNewPublication(forms.ModelForm):
     img_pub = forms.ImageField()
     nombre_pub = forms.CharField(max_length=100)
     descrip_pub = forms.CharField(max_length=100)
+    is_curso_id = forms.IntegerField(required=False)
+
 
     class Meta:
         model = create_nuevo_publicacion
