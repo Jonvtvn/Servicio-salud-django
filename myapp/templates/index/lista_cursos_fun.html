@@ -77,9 +77,13 @@
                 <label class="form-label">Hospital :</label>
                 <div class="input-group">
                   <select name="hospital_curso_buscar" id="hospital_curso_buscar" value=" " class="form-select">
-                    <option selected disabled>Ver selecciones</option>
+                    {%if form4 %}
+                      <option selected value="{{form4.hospital_curso_buscar.value}}" disabled>{{form4.hospital_curso_buscar.value}}</option>
+                    {% else %}
+                      <option selected disabled>Ver selecciones</option>
+                    {% endif %}
                     {%for class_hosp in class_hospital %}
-                    <option value="{{class_hosp.nombre_hospital}}">{{ class_hosp.nombre_hospital }}</option>
+                      <option value="{{class_hosp.nombre_hospital}}">{{ class_hosp.nombre_hospital }}</option>
                     {% endfor %}
                   </select>
                   <button class="btn btn-warning" type="submit" form="filtro_cursos_hospital" id="filtro_cursos"><img
@@ -93,7 +97,11 @@
                 <label class="form-label">Servicio :</label>
                 <div class="input-group">
                   <select name="servicio_curso_buscar" id="servicio_curso_buscar" value=" " class="form-select">
-                    <option selected disabled>Ver selecciones</option>
+                    {%if form3 %}
+                      <option selected value="{{form3.servicio_curso_buscar.value}}" disabled>{{form3.servicio_curso_buscar.value}}</option>
+                    {% else %}
+                      <option selected disabled>Ver selecciones</option>
+                    {% endif %}
                     {%for class_serv in class_serv %}
                     <option value="{{class_serv.nombre_sev}}">{{ class_serv.nombre_sev }}</option>
                     {% endfor %}
@@ -109,7 +117,11 @@
                 <label class="form-label">Próximo a finalzar :</label>
                 <div class="input-group">
                   <select name="prox_end_curso_buscar" id="prox_end_curso_buscar" value=" " class="form-select">
-                    <option selected disabled>Ver selecciones</option>
+                    {%if form2 %}
+                      <option selected value="{{form2.prox_end_curso_buscar.value}}" disabled>{{form2.prox_end_curso_buscar.value}}</option>
+                    {% else %}
+                      <option selected disabled>Ver selecciones</option>
+                    {% endif %}
                     <option value="15">15 Días</option>
                     <option value="10">10 Días</option>
                     <option value="5">5 Días</option>
@@ -126,7 +138,11 @@
                 <label for="">Personal :</label>
                 <div class="input-group">
                   <select name="personal_curso_buscar" id="personal_curso_buscar" value=" " class="form-select">
-                    <option selected disabled>Ver selecciones</option>
+                    {%if form5 %}
+                      <option selected value="{{form5.personal_curso_buscar.value}}" disabled>{{form5.personal_curso_buscar.value}}</option>
+                    {% else %}
+                      <option selected disabled>Ver selecciones</option>
+                    {% endif %}
                     <option value="Auxiliar">Auxiliar</option>
                     <option value="Médicos">Médicos</option>
                     <option value="Administrativo">Administrativo</option>
@@ -153,7 +169,7 @@
                   <img src="{{cursos.img_curso.url}}" class="card-img-top">
                   <div class="card-body card-body-list-cur">
                     <h5 class="card-title card-title-cursos">{{ cursos.nombre_curso | truncatechars:30}}</h5>
-                    <p class="card-text card-text-cursos">{{ cursos.descrip_corta_curso | truncatechars:40}}</p>
+                    <p class="card-text card-text-cursos">{{ cursos.descrip_corta_curso |linebreaksbr | truncatechars:40}}</p>
                     <ul class="list-group list-group-flush">
                       <li class="list-group-item">Hospital: {{ cursos.hospital_curso | truncatechars:14}}</li>
                       <li class="list-group-item">Finaliza: {{ cursos.time_end_curso }}</li>

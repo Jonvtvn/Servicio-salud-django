@@ -116,9 +116,8 @@
                   </div>
                   <div class="my-1 text-start">
                     <label class="my-1" for="">Descripcion:</label>
-                    <input class="form-control form-control-sm" type="text" placeholder="Descripción" required
-                      aria-label=".form-control-sm example" name="descrip_card"
-                      value="{{form_card.descrip_card.value}}">
+                    <textarea class="form-control form-control-sm" type="text" placeholder="Descripción" required
+                      aria-label=".form-control-sm example" name="descrip_card">{{form_card.descrip_card.value}}</textarea>
                     {% if form_card.descrip_card.errors %}
                     <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
                       {{form_card.descrip_card.errors}}
@@ -237,10 +236,8 @@
                           {%endif%}
                         </div>
                         <div><br>
-                          <label for="">Descripcion:</label>
-                          <input class="form-control form-control-sm" type="text" placeholder="Descripción" required
-                            aria-label=".form-control-sm example" name="descrip_pub"
-                            value="{{form_public.descrip_pub.value}}">
+                          <label for="">Descripcion:</label> 
+                          <textarea class="form-control form-control-sm" name="descrip_pub" id="descrip_pub" type="text" placeholder="Descripción" required>{{form_public.descrip_pub.value}}</textarea>
                           {% if form_public.descrip_pub.errors%}
                           <div class="alert alert-warning alert-bg " role="alert" style="height: 60px;">
                             {{form_public.descrip_pub.errors}}

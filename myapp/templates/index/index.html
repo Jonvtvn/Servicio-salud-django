@@ -95,7 +95,7 @@
               {% endif %}
               <div class="carousel-caption text-white rounded">
                 <h5>{{publicidad2.nombre_pub}}</h5>
-                <p>{{publicidad2.descrip_pub}} </p>
+                <p>{{publicidad2.descrip_pub |linebreaksbr}} </p>
               </div>
             </div>
             {% endfor %}
@@ -157,7 +157,7 @@
             <div class="card-body bg-light">
               <h5 class="card-title fw-bold text-uppercase">{{perfil_card.nombre_card}}</h5>
               <p >Cargo: {{perfil_card.cargo_card}}</p>
-              <p >{{perfil_card.descrip_card}}</p>
+              <p >{{perfil_card.descrip_card |linebreaksbr}}</p>
             </div>
           </div>
         </div>

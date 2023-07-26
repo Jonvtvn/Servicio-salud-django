@@ -142,12 +142,13 @@ def lista_cursos_funcionarios(request):
             nombre_curso_buscar = request.POST.get('nombre_curso_buscar')
             if nombre_curso_buscar:
                 buscador = create_nuevo_curso.objects.filter(
-                    nombre_curso__icontains=nombre_curso_buscar
+                    nombre_curso__icontains=nombre_curso_buscar,
+                    activo=True
                     )
                 #En caso de no encontrar nada entregamos mensaje de falla
                 if buscador.exists() == False:
                     return render(request, 'index/lista_cursos_fun.html', {"cursos": buscador, "class_hospital": class_hospital, "class_serv": class_serv, "fallafiltro": True ,"in_busca_nombre" : form})
-                return render(request,'index/lista_cursos_fun.html',{"cursos": buscador, "class_hospital": class_hospital, "class_serv": class_serv,"in_busca_nombre" : form})
+                return render(request,'index/lista_cursos_fun.html',{"form":form,"cursos": buscador, "class_hospital": class_hospital, "class_serv": class_serv,"in_busca_nombre" : form})
             
         #Filtro busqueda fecha
         form2 = form_filtro_cursos_time(request.POST)
@@ -158,45 +159,49 @@ def lista_cursos_funcionarios(request):
                 fecha_buscar = hoy + \
                     datetime.timedelta(days=int(prox_end_curso_buscar))
                 buscador = create_nuevo_curso.objects.filter(
-                    time_end_curso__range=(hoy, fecha_buscar))
+                    time_end_curso__range=(hoy, fecha_buscar),
+                    activo=True)
                 #En caso de no encontrar nada entregamos mensaje de falla
                 if buscador.exists() == False:
                     return render(request, 'index/lista_cursos_fun.html', {"cursos": buscador, "class_hospital": class_hospital, "class_serv": class_serv, "fallafiltro": True})
-                return render(request,'index/lista_cursos_fun.html',{"cursos": buscador, "class_hospital": class_hospital, "class_serv": class_serv})
+                return render(request,'index/lista_cursos_fun.html',{"form2":form2,"cursos": buscador, "class_hospital": class_hospital, "class_serv": class_serv})
         #Filtro busqueda servicio
         form3 = form_filtro_cursos_servicio(request.POST)
         if form3.is_valid():
             servicio_curso_buscar = request.POST.get('servicio_curso_buscar')
             if servicio_curso_buscar:
                 buscador = create_nuevo_curso.objects.filter(
-                    servicio_curso=servicio_curso_buscar)
+                    servicio_curso=servicio_curso_buscar,
+                    activo=True)
                 #En caso de no encontrar nada entregamos mensaje de falla
                 if buscador.exists() == False:
                     return render(request, 'index/lista_cursos_fun.html', {"cursos": buscador, "class_hospital": class_hospital, "class_serv": class_serv, "fallafiltro": True})
-                return render(request,'index/lista_cursos_fun.html',{"cursos": buscador, "class_hospital": class_hospital, "class_serv": class_serv})
+                return render(request,'index/lista_cursos_fun.html',{"form3":form3, "cursos": buscador, "class_hospital": class_hospital, "class_serv": class_serv})
         #Filtro de busqueda Hospital
         form4 = form_filtro_cursos_hospital(request.POST)
         if form4.is_valid():
             hospital_curso_buscar = request.POST.get('hospital_curso_buscar')
             if hospital_curso_buscar:
                 buscador = create_nuevo_curso.objects.filter(
-                    hospital_curso=hospital_curso_buscar)
+                    hospital_curso=hospital_curso_buscar,
+                    activo=True)
                 #En caso de no encontrar nada entregamos mensaje de falla
                 if buscador.exists() == False:
                     return render(request, 'index/lista_cursos_fun.html', {"cursos": buscador, "class_hospital": class_hospital, "class_serv": class_serv, "fallafiltro": True})
-                return render(request,'index/lista_cursos_fun.html',{"cursos": buscador, "class_hospital": class_hospital, "class_serv": class_serv})
+                return render(request,'index/lista_cursos_fun.html',{"form4":form4,"cursos": buscador, "class_hospital": class_hospital, "class_serv": class_serv})
         #Filtro de buqueda personal
         form5 = form_filtro_cursos_personal(request.POST)
         if form5.is_valid():
             personal_curso_buscar = request.POST.get('personal_curso_buscar')
             if personal_curso_buscar:
                 buscador = create_nuevo_curso.objects.filter(
-                    personal_cursos__icontains=personal_curso_buscar
+                    personal_cursos__icontains=personal_curso_buscar,
+                    activo=True
                     ).distinct()
                 #En caso de no encontrar nada entregamos mensaje de falla
                 if buscador.exists() == False:
                     return render(request, 'index/lista_cursos_fun.html', {"cursos": buscador, "class_hospital": class_hospital, "class_serv": class_serv, "fallafiltro": True})
-                return render(request,'index/lista_cursos_fun.html',{"cursos": buscador, "class_hospital": class_hospital, "class_serv": class_serv})
+                return render(request,'index/lista_cursos_fun.html',{"form5":form5,"cursos": buscador, "class_hospital": class_hospital, "class_serv": class_serv})
         if 'descarga_curso' in request.POST:
             form6 = form_descarga_postulacion(request.POST)
             if form6.is_valid():

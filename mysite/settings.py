@@ -82,7 +82,7 @@ ALLOWED_HOSTS = ['45.236.128.50',"127.0.0.1", 'localhost']
 DATABASES = {
 	'default': {
 		'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME' : 'db_curso_5',
+        'NAME' : 'db_curso_7',
         'USER': 'tesis5',
         'PASSWORD' : 'root',
 		'HOST' : 'localhost',#si tienes otra dirección host debes remplazar esta
